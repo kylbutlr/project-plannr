@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en" data-app-stylr-theme="dark">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Project Plannr</title><link rel="icon" href="/favicon-32.png?v=plannr-3" type="image/png" sizes="32x32"><link rel="icon" href="/favicon-16.png?v=plannr-3" type="image/png" sizes="16x16"><link rel="icon" href="/app-icon.svg?v=plannr-3" type="image/svg+xml"><link rel="stylesheet" href="/tokens.css"><link rel="stylesheet" href="/board.css"></head>
+<body>
+<header><div><h1>Project Plannr</h1><p>One place to choose what comes next.</p></div><div id="header-controls" class="header-controls" hidden><label>Project <select id="project"><option value="all">All projects</option></select></label><button id="manage-projects" aria-expanded="false" aria-controls="project-manager">Manage projects</button><button id="refresh-board">Refresh</button><button id="sign-out" hidden>Sign out</button></div></header>
+<main>
+ <section id="session-panel" class="session-panel" aria-label="Workspace access"><h2 id="session-heading">Checking workspace access</h2><p id="session-message" role="status" aria-live="polite">Checking your session. Private board data stays hidden until access is confirmed.</p><form id="sign-in" hidden><label class="grow" for="workspace-password">Workspace password<input id="workspace-password" type="password" autocomplete="current-password" required maxlength="256" aria-describedby="session-message"></label><label class="remember-choice"><input id="remember-me" type="checkbox" aria-describedby="remember-help">Remember me</label><small id="remember-help">Stay signed in for 30 days on this browser. Use only on a private device.</small><button id="unlock-workspace" class="primary">Open workspace</button></form><button id="session-retry" hidden>Retry connection</button></section>
+ <div id="private-board" hidden>
+ <p id="boundary" class="boundary"></p>
+ <section id="project-manager" hidden aria-label="Project management"><h2>Projects</h2><p>Add games, apps, or other projects. Archive removes a project from the board without losing its tickets; restore brings it back.</p><form id="add-project"><label class="grow">Project name <input id="project-name" required maxlength="80" placeholder="Name your project"></label><label>Project type <select id="project-kind"><option value="app">App</option><option value="game">Game</option><option value="other">Other</option></select></label><button class="primary">Add project</button></form><div id="project-list"></div></section>
+ <nav class="views" aria-label="Board views"><button data-view="B" aria-pressed="true">Project swimlanes</button><button data-view="A" aria-pressed="false">Kanban</button><button data-view="C" aria-pressed="false">Ranked queue</button></nav>
+ <form id="create"><label>Project <select id="new-project"></select></label><label class="grow">Ticket title <input id="title" required maxlength="120" placeholder="What should we work on?"></label><label>Priority<select id="new-priority"><option value="P0">P0: Critical</option><option value="P1">P1: High</option><option value="P2" selected>P2: Normal</option><option value="P3">P3: Low</option></select></label><button id="add-ticket" class="primary">Add ticket</button></form>
+ <p id="message" role="status" aria-live="polite">Loading your board...</p>
+ <p id="latest-activity" aria-live="polite">No activity yet.</p>
+ <div id="board-updates" hidden><p role="status" aria-live="polite">Updates available. Your current view and draft are unchanged.</p><button id="apply-updates">Refresh to see updates</button><small>Refresh returns columns to their first page.</small></div>
+ <form id="completed-filter"><label class="grow">Search all tickets<input id="completed-search" type="search" maxlength="120" placeholder="Title, description, or ticket ID"></label><label id="board-sort-control">Sort<select id="board-sort" aria-describedby="sort-help"><option value="default">Default</option><option value="priority">Priority</option><option value="recent">Recent</option></select></label><button>Search</button><button type="button" id="clear-search">Clear</button></form>
+ <p id="sort-help">Default: priority for active work; newest completion first for Completed.</p>
+ <p id="search-help" hidden>Search includes unloaded tickets in every status. Project swimlanes stay expanded while searching; Clear restores your collapsed projects.</p>
+ <div id="workspace"><div id="board"></div></div>
+ <div class="completed-footer"><p id="completed-count" role="status"></p><button id="load-completed" hidden>Load 20 more completed tickets</button></div>
+ <dialog id="detail" aria-labelledby="editor-heading"></dialog>
+ <details><summary>Agent activity and current state</summary><p id="activity-boundary"></p><ol id="activity"></ol><details><summary>Loaded board JSON</summary><pre id="snapshot"></pre></details></details>
+ </div>
+</main>
+<script type="module" src="/board.js"></script>
+</body></html>

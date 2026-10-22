@@ -1,0 +1,86 @@
+{
+  "name": "app-stylr",
+  "version": "1.2.0",
+  "description": "An opinionated, adaptable design foundation for small web, browser-extension, and macOS products.",
+  "license": "MIT",
+  "author": "Kyle Butler",
+  "homepage": "https://kylbutlr.com/app-stylr",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kylbutlr/app-stylr.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kylbutlr/app-stylr/issues"
+  },
+  "keywords": [
+    "design-tokens",
+    "css",
+    "swiftui",
+    "browser-extension",
+    "design-system"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "files": [
+    "adapters",
+    "assets",
+    "chrome-theme",
+    "docs",
+    "examples",
+    "scripts/build-chrome-theme.mjs",
+    "scripts/build-site.mjs",
+    "scripts/cli-errors.mjs",
+    "scripts/generate-icons.mjs",
+    "scripts/token-utils.mjs",
+    "scripts/validate-macos-release.mjs",
+    "reference",
+    "templates",
+    "tokens/app-stylr.json",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "LICENSE",
+    "README.md",
+    "SECURITY.md",
+    "SUPPORT.md"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    "./css": "./adapters/css/app-stylr.css",
+    "./fonts.css": "./adapters/css/fonts.css",
+    "./tokens": "./tokens/app-stylr.json",
+    "./assets/*": "./assets/*",
+    "./templates/*": "./templates/*",
+    "./chrome-theme/*": "./chrome-theme/*"
+  },
+  "bin": {
+    "app-stylr-chrome-theme": "./scripts/build-chrome-theme.mjs",
+    "app-stylr-icons": "./scripts/generate-icons.mjs",
+    "app-stylr-macos-release-check": "./scripts/validate-macos-release.mjs",
+    "app-stylr-reference": "./scripts/build-site.mjs"
+  },
+  "style": "adapters/css/app-stylr.css",
+  "scripts": {
+    "build": "node scripts/build-tokens.mjs",
+    "build:check": "node scripts/build-tokens.mjs --check",
+    "icons": "node scripts/generate-icons.mjs",
+    "icons:check": "node scripts/generate-icons.mjs --check",
+    "chrome-theme": "node scripts/build-chrome-theme.mjs",
+    "chrome-theme:check": "node scripts/build-chrome-theme.mjs --check",
+    "site": "node scripts/build-site.mjs",
+    "privacy:check": "node scripts/audit-public-surface.mjs",
+    "package:check": "node scripts/verify-package.mjs",
+    "validate": "node scripts/validate-tokens.mjs",
+    "validate:repo": "node scripts/validate-repository.mjs",
+    "check": "npm run validate && npm run build:check && npm run icons:check && npm run chrome-theme:check && npm run site && npm run validate:repo && npm run privacy:check",
+    "test": "npm run check",
+    "reference": "python3 -m http.server 4187 --directory .site"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "sharp": "0.35.4"
+  }
+}

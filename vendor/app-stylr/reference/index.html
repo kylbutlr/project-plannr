@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="en" data-app-stylr-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <meta
+      name="description"
+      content="App Stylr is an opinionated, adaptable design foundation for small web, browser-extension, and macOS products."
+    />
+    <title>App Stylr Reference</title>
+    <link rel="canonical" href="https://kylbutlr.com/app-stylr" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="App Stylr Reference" />
+    <meta
+      property="og:description"
+      content="An opinionated, adaptable design foundation for shared product character without prescribed layouts."
+    />
+    <meta property="og:url" content="https://kylbutlr.com/app-stylr" />
+    <meta property="og:image" content="__APP_STYLR_SOCIAL_IMAGE_URL__" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="App Stylr Reference" />
+    <meta
+      name="twitter:description"
+      content="An opinionated, adaptable design foundation for shared product character without prescribed layouts."
+    />
+    <meta name="twitter:image" content="__APP_STYLR_SOCIAL_IMAGE_URL__" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"App Stylr Reference","description":"An opinionated, adaptable design foundation for shared product character without prescribed layouts.","url":"https://kylbutlr.com/app-stylr","creator":{"@type":"Person","name":"Kyle Butler","url":"https://kylbutlr.com"}}</script>
+    <link rel="icon" href="../assets/favicon-32.png?v=evening-1" type="image/png" sizes="32x32" />
+    <link rel="icon" href="../assets/app-icon-gradient-base.svg?v=evening-1" type="image/svg+xml" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="hero page-width">
+      <div class="hero-copy">
+        <h1>App Stylr</h1>
+        <p class="hero-description">
+          Shared visual infrastructure for independent products that should feel related,
+          not identical. Keep the semantic foundation. Shape the interface around its task.
+        </p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#start">Start with CSS</a>
+          <a class="button button-secondary" href="https://github.com/kylbutlr/app-stylr">View on GitHub</a>
+        </div>
+        <p class="privacy-summary">
+          No account or upload is required. This static reference has no analytics code,
+          cookies, or browser storage. <a href="#privacy">How App Stylr handles data</a>
+        </p>
+        <div class="hero-meta" aria-label="Reference metadata">
+          <span>v1.2.0 source</span>
+          <span>Layout agnostic</span>
+          <span>Theme flexible</span>
+          <span>WCAG checked</span>
+        </div>
+      </div>
+      <div class="hero-aside">
+        <figure class="hero-mark">
+          <img
+            src="../assets/app-icon-gradient-base.svg"
+            alt="App Stylr charcoal-to-mint gradient icon base"
+          />
+          <figcaption>Shared character, product-owned composition.</figcaption>
+        </figure>
+        <aside class="system-card" aria-labelledby="system-title">
+          <h2 id="system-title">A foundation, not a formula.</h2>
+          <p>
+            App Stylr coordinates meaning, contrast, and visual character. Your product
+            still owns its layout, components, density, breakpoints, and platform behavior.
+          </p>
+          <span class="status-chip">Compatible without looking cloned</span>
+        </aside>
+      </div>
+    </header>
+
+    <main class="page-width">
+      <section class="section start-section" id="start" aria-labelledby="start-title">
+        <div class="section-heading">
+          <div>
+            <h2 id="start-title">Use the tokens in three steps</h2>
+          </div>
+          <p>
+            Start with CSS for a web page or extension. App Stylr provides values and
+            assets, not application components or behavior.
+          </p>
+        </div>
+
+        <ol class="start-grid">
+          <li>
+            <span class="principle-number">01</span>
+            <h3>Install a pinned release</h3>
+            <pre><code>npm install "github:kylbutlr/app-stylr#v1.1.0"</code></pre>
+            <p>Pinning keeps token changes deliberate and reviewable.</p>
+          </li>
+          <li>
+            <span class="principle-number">02</span>
+            <h3>Import fonts and tokens</h3>
+            <pre><code>@import "app-stylr/fonts.css";
+@import "app-stylr/css";</code></pre>
+            <p>Import both once in your application stylesheet.</p>
+          </li>
+          <li>
+            <span class="principle-number">03</span>
+            <h3>Use semantic roles</h3>
+            <pre><code>.panel {
+  color: var(--ui-text);
+  background: var(--ui-surface);
+}</code></pre>
+            <p>Use roles such as text and surface instead of copying palette values.</p>
+          </li>
+        </ol>
+
+        <div class="start-links" aria-label="More ways to get started">
+          <a href="https://github.com/kylbutlr/app-stylr/tree/main/examples/web">Complete web example</a>
+          <a href="https://github.com/kylbutlr/app-stylr/blob/main/docs/design-practice.md">Design practice</a>
+          <a href="https://github.com/kylbutlr/app-stylr/blob/main/docs/browser-extensions.md">Browser-extension guide</a>
+          <a href="https://github.com/kylbutlr/app-stylr#swift-and-swiftui">Swift and SwiftUI setup</a>
+        </div>
+
+        <details class="learn-more">
+          <summary>What App Stylr does and does not change</summary>
+          <p>
+            App Stylr supplies reusable visual values, generated adapters, fonts, icon
+            tools, and optional guidance. It does not add accounts, save application data,
+            send project files over the network, replace native controls, or manage your releases.
+          </p>
+        </details>
+      </section>
+
+      <section class="section" aria-labelledby="principles-title">
+        <div class="section-heading">
+          <div>
+            <h2 id="principles-title">What stays shared</h2>
+          </div>
+          <p>Compatibility lives in meaning and quality, not screenshot resemblance.</p>
+        </div>
+
+        <div class="criteria-grid">
+          <article>
+            <h3>Semantics</h3>
+            <p>Roles such as text, surface, accent, and status keep their meaning across products.</p>
+          </article>
+          <article>
+            <h3>Access</h3>
+            <p>Contrast, focus, motion preferences, and non-color cues remain dependable.</p>
+          </article>
+          <article>
+            <h3>Character</h3>
+            <p>Color, type, and rhythm create a family resemblance without fixing the composition.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="palette-title">
+        <div class="section-heading">
+          <div>
+            <h2 id="palette-title">Brand palette</h2>
+          </div>
+          <p>Charcoal structure moves toward a restrained mint signal.</p>
+        </div>
+
+        <div class="palette-grid">
+          <article class="swatch swatch-ink">
+            <span>Ink</span><code>#111111</code>
+          </article>
+          <article class="swatch swatch-charcoal">
+            <span>Charcoal</span><code>#2E3135</code>
+          </article>
+          <article class="swatch swatch-slate">
+            <span>Slate</span><code>#49545B</code>
+          </article>
+          <article class="swatch swatch-steel">
+            <span>Steel</span><code>#647B81</code>
+          </article>
+          <article class="swatch swatch-sage">
+            <span>Sage</span><code>#83A4A3</code>
+          </article>
+          <article class="swatch swatch-mint">
+            <span>Mint</span><code>#A9CEC2</code>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="themes-title">
+        <div class="section-heading">
+          <div>
+            <h2 id="themes-title">Examples, not templates</h2>
+          </div>
+          <p>These compositions demonstrate token behavior. They are not required product layouts.</p>
+        </div>
+
+        <p class="specimen-note">
+          Static examples: the controls below demonstrate appearance and states. They do
+          not prescribe navigation, component structure, or responsive behavior, and they
+          do not save, sync, open settings, or change application data.
+        </p>
+
+        <div class="theme-grid">
+          <article
+            class="theme-preview"
+            data-app-stylr-theme="dark"
+            aria-labelledby="dark-title"
+          >
+            <header class="theme-preview-header">
+              <div>
+                <span class="theme-dot" aria-hidden="true"></span>
+                <strong id="dark-title">Dark theme example</strong>
+              </div>
+              <span class="mono-label">data-theme="dark"</span>
+            </header>
+
+            <div class="app-frame">
+              <aside class="app-sidebar" aria-label="Example navigation">
+                <div class="mini-brand">
+                  <span class="mini-mark" aria-hidden="true"></span>
+                  <strong>Daily Flow</strong>
+                </div>
+                <nav>
+                  <span class="nav-item is-active">
+                    <span class="nav-icon">✓</span>Today
+                  </span>
+                  <span class="nav-item">
+                    <span class="nav-icon">○</span>Upcoming
+                  </span>
+                  <span class="nav-item">
+                    <span class="nav-icon">◇</span>Archive
+                  </span>
+                </nav>
+                <div class="sync-status">
+                  <span class="status-dot is-synced" aria-hidden="true"></span>
+                  Synced
+                </div>
+              </aside>
+
+              <div class="app-workspace">
+                <header class="workspace-header">
+                  <div>
+                    <p class="app-kicker">Saturday, August 15</p>
+                    <h3>Good afternoon</h3>
+                  </div>
+                  <span class="icon-button" aria-hidden="true">•••</span>
+                </header>
+
+                <div class="metric-row">
+                  <article class="metric-card">
+                    <span>Open</span><strong>08</strong>
+                  </article>
+                  <article class="metric-card">
+                    <span>Completed</span><strong>12</strong>
+                  </article>
+                  <article class="metric-card">
+                    <span>Focus</span><strong>75%</strong>
+                  </article>
+                </div>
+
+                <div class="composer">
+                  <span class="sample-label">Quick add</span>
+                  <div class="input-row">
+                    <span class="sample-input is-focused">Review App Stylr tokens</span>
+                    <span class="button button-primary">Add task</span>
+                  </div>
+                  <small>Press Return to save</small>
+                </div>
+
+                <div class="task-list" aria-label="Example tasks">
+                  <div class="task-row is-selected">
+                    <span class="task-check is-complete" aria-hidden="true"></span>
+                    <span>Ship the visual contract</span>
+                    <span class="task-tag">Today</span>
+                  </div>
+                  <div class="task-row">
+                    <span class="task-check" aria-hidden="true"></span>
+                    <span>Pin the shared release</span>
+                    <span class="task-tag">Next</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article
+            class="theme-preview"
+            data-app-stylr-theme="light"
+            aria-labelledby="light-title"
+          >
+            <header class="theme-preview-header">
+              <div>
+                <span class="theme-dot" aria-hidden="true"></span>
+                <strong id="light-title">Light theme example</strong>
+              </div>
+              <span class="mono-label">data-theme="light"</span>
+            </header>
+
+            <div class="component-stack">
+              <article class="light-card">
+                <p class="app-kicker">Account</p>
+                <h3>Project workspace</h3>
+                <p>
+                  This specimen uses spacing, borders, and typography to create hierarchy.
+                  Another product may choose a completely different composition.
+                </p>
+                <div class="button-row">
+                  <span class="button button-primary">Save changes</span>
+                  <span class="button button-secondary">Cancel</span>
+                </div>
+              </article>
+
+              <div class="form-grid">
+                <div class="sample-field">
+                  <span class="sample-label">Workspace name</span>
+                  <span class="sample-input">Example Studio</span>
+                </div>
+                <div class="sample-field">
+                  <span class="sample-label">Default view</span>
+                  <span class="select-field sample-input">Today</span>
+                </div>
+              </div>
+
+              <span class="text-link">Review account activity</span>
+
+              <div class="selection-row">
+                <span class="selection-icon">✓</span>
+                <span><strong>App Stylr enabled</strong><small>Following v1.2.0</small></span>
+                <span class="status-pill">Active</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section type-section" aria-labelledby="type-title">
+        <div class="section-heading">
+          <div>
+            <h2 id="type-title">Geist, when it fits</h2>
+          </div>
+          <p>Geist Sans and Geist Mono are bundled and coordinated, but optional. The product voice still leads.</p>
+        </div>
+
+        <div class="type-grid">
+          <article class="type-specimen">
+            <span class="type-meta">Display · 40/44 · 700</span>
+            <p class="type-display">Calm tools for daily work.</p>
+          </article>
+          <article class="type-specimen">
+            <span class="type-meta">Heading 1 · 32/38 · 700</span>
+            <p class="type-heading1">Clear hierarchy, quiet surfaces.</p>
+          </article>
+          <article class="type-specimen">
+            <span class="type-meta">Heading 2 · 26/32 · 650</span>
+            <p class="type-heading2">Progress without noise.</p>
+          </article>
+          <article class="type-specimen">
+            <span class="type-meta">Body · 16/24 · 400</span>
+            <p class="type-body">
+              App Stylr keeps product decisions recognizable across apps while
+              leaving room for each tool to solve its own problem.
+            </p>
+          </article>
+          <article class="type-specimen mono-specimen">
+            <span class="type-meta">Mono metadata · 12/16 · 500</span>
+            <p>SYNCED 14:32 · APP-STYLR@1.2.0</p>
+          </article>
+          <article class="type-specimen character-specimen">
+            <span class="type-meta">Characters</span>
+            <p>Aa Bb Gg Kk Rr 0123456789 &amp; @ #</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="feedback-title">
+        <div class="section-heading">
+          <div>
+            <h2 id="feedback-title">Status with language</h2>
+          </div>
+          <p>Color reinforces meaning. Text and symbols carry it.</p>
+        </div>
+
+        <div class="feedback-grid" data-app-stylr-theme="dark">
+          <article class="feedback-card feedback-success">
+            <span class="feedback-icon">✓</span>
+            <div><strong>Icons generated</strong><p>The new files are ready in your chosen folder.</p></div>
+          </article>
+          <article class="feedback-card feedback-warning">
+            <span class="feedback-icon">!</span>
+            <div><strong>Unsupported image</strong><p>Choose a square SVG or PNG and try again.</p></div>
+          </article>
+          <article class="feedback-card feedback-danger">
+            <span class="feedback-icon">×</span>
+            <div><strong>Cannot write to this folder</strong><p>Choose a folder you can edit, then run the command again.</p></div>
+          </article>
+          <article class="feedback-card feedback-info">
+            <span class="feedback-icon">i</span>
+            <div><strong>Check only</strong><p>No files will change while the command verifies generated output.</p></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="responsive-title">
+        <div class="section-heading">
+          <div>
+            <h2 id="responsive-title">Adapt the task, not a screenshot</h2>
+          </div>
+          <p>These are possible responses to available space, not linked breakpoint rules.</p>
+        </div>
+
+        <div class="responsive-grid">
+          <figure class="device-example desktop-example">
+            <div class="device-screen">
+              <span class="diagram-sidebar"></span>
+              <span class="diagram-workspace"></span>
+              <span class="diagram-detail"></span>
+            </div>
+            <figcaption><strong>Wide example</strong><span>Keep related context visible</span></figcaption>
+          </figure>
+          <figure class="device-example tablet-example">
+            <div class="device-screen">
+              <span class="diagram-sidebar"></span>
+              <span class="diagram-workspace"></span>
+              <span class="diagram-scrim"></span>
+              <span class="diagram-drawer"></span>
+            </div>
+            <figcaption><strong>Medium example</strong><span>Reveal detail when needed</span></figcaption>
+          </figure>
+          <figure class="device-example phone-example">
+            <div class="device-screen">
+              <span class="diagram-workspace"></span>
+              <span class="diagram-scrim"></span>
+              <span class="diagram-sheet"></span>
+            </div>
+            <figcaption><strong>Compact example</strong><span>Prioritize the current step</span></figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section icon-section" aria-labelledby="icon-title">
+        <div class="section-heading">
+          <div>
+            <h2 id="icon-title">An optional icon recipe</h2>
+          </div>
+          <p>Use the gradient base for shared brand expression, or bring your own square master.</p>
+        </div>
+
+        <div class="icon-grid">
+          <figure class="icon-card">
+            <img src="../assets/example-app-icon.svg" alt="Example App Stylr app icon" />
+            <figcaption><strong>Example symbol</strong><span>Public reference</span></figcaption>
+          </figure>
+          <figure class="icon-card">
+            <img
+              src="../assets/app-icon-gradient-base.svg"
+              alt="App Stylr gradient-only icon base"
+            />
+            <figcaption><strong>Gradient base</strong><span>Start here</span></figcaption>
+          </figure>
+          <div class="icon-rules">
+            <p><span>1024</span>Master canvas</p>
+            <p><span>840</span>Rounded square</p>
+            <p><span>190</span>Corner radius</p>
+            <p><span>9%</span>Transparent space</p>
+          </div>
+        </div>
+
+        <div class="platform-icon-grid">
+          <figure class="platform-icon-card">
+            <div class="platform-icon-preview platform-icon-preview-chrome">
+              <img src="../assets/platform-icons/reference/chrome/icon-128.png" alt="Chrome extension icon reference at 128 pixels" />
+            </div>
+            <figcaption><strong>Chrome</strong><span>16 · 32 · 48 · 128</span></figcaption>
+          </figure>
+          <figure class="platform-icon-card">
+            <div class="platform-icon-preview platform-icon-preview-apple">
+              <img src="../assets/platform-icons/reference/web/apple-touch-icon.png" alt="Apple touch icon reference at 180 pixels" />
+            </div>
+            <figcaption><strong>Apple touch</strong><span>152 · 167 · 180</span></figcaption>
+          </figure>
+          <figure class="platform-icon-card">
+            <div class="platform-icon-preview platform-icon-preview-web">
+              <img src="../assets/platform-icons/reference/web/icon-512.png" alt="Installable web app icon reference at 512 pixels" />
+            </div>
+            <figcaption><strong>Installable site</strong><span>192 · 512</span></figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section takeaway" aria-labelledby="takeaway-title">
+        <div class="section-heading">
+          <div>
+            <h2 id="takeaway-title">A recognizable foundation, not a prescribed product.</h2>
+          </div>
+          <p>Consistency should reduce repeated decisions without erasing product-specific needs.</p>
+        </div>
+
+        <div class="takeaway-grid">
+          <article>
+            <h3>The foundation owns</h3>
+            <p>Semantic meaning, accessible contrast, generated adapters, and versioned shared assets.</p>
+          </article>
+          <article>
+            <h3>The product owns</h3>
+            <p>Layout, navigation, density, components, breakpoints, platform behavior, and expressive direction.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section privacy-section" id="privacy" aria-labelledby="privacy-title">
+        <div class="section-heading">
+          <div>
+            <h2 id="privacy-title">Your product files stay on your device.</h2>
+          </div>
+          <p>
+            App Stylr has no account, cloud service, telemetry, or upload feature. Its
+            commands read and write only the local files and folders you choose.
+          </p>
+        </div>
+
+        <div class="privacy-grid">
+          <article>
+            <h3>On this page</h3>
+            <p>No form data, cookies, analytics code, or browser storage is used.</p>
+          </article>
+          <article>
+            <h3>In the command-line tools</h3>
+            <p>Selected inputs are processed locally. Nothing is uploaded by App Stylr.</p>
+          </article>
+          <article>
+            <h3>When you install</h3>
+            <p>Your package provider handles the download. App Stylr code sends no install event.</p>
+          </article>
+        </div>
+
+        <p class="privacy-detail">
+          This page’s web host may process ordinary request data needed to deliver it.
+          Read the <a href="https://github.com/kylbutlr/app-stylr/blob/main/docs/privacy.md">complete privacy details</a>
+          for storage, deletion, hosting, and command-specific behavior.
+        </p>
+      </section>
+    </main>
+
+    <footer class="page-width">
+      <span>App Stylr v1.2.0</span>
+      <span>Open design foundation</span>
+    </footer>
+  </body>
+</html>

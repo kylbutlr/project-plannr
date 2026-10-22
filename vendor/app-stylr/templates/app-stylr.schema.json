@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kylbutlr/app-stylr/blob/v1.2.0/templates/app-stylr.schema.json",
+  "title": "App Stylr consumer pin",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["name", "version", "release", "theme", "exceptions"],
+  "properties": {
+    "name": {
+      "const": "App Stylr"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "release": {
+      "type": "string",
+      "pattern": "^https://github\\.com/kylbutlr/app-stylr/tree/v[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "theme": {
+      "enum": ["dark", "light"]
+    },
+    "exceptions": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

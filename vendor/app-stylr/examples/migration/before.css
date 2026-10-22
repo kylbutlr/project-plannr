@@ -1,0 +1,14 @@
+.card {
+  color: #f3f7f5;
+  background: #171b1b;
+  border: 1px solid #303838;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.card__action {
+  min-height: 44px;
+  color: #111111;
+  background: #a9cec2;
+  border-radius: 8px;
+}

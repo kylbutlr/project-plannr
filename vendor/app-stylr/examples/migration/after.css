@@ -1,0 +1,17 @@
+@import "app-stylr/fonts.css";
+@import "app-stylr/css";
+
+.card {
+  color: var(--ui-text);
+  background: var(--ui-surface);
+  border: 1px solid var(--ui-border);
+  border-radius: var(--radius-card);
+  padding: var(--space-24);
+}
+
+.card__action {
+  min-height: var(--size-control);
+  color: var(--ui-accent-text);
+  background: var(--ui-accent);
+  border-radius: var(--radius-control);
+}

@@ -1,0 +1,10 @@
+{
+  "name": "App Stylr",
+  "version": "1.2.0",
+  "release": "https://github.com/kylbutlr/app-stylr/tree/b3ca31ea264d5dd233fd871ac167247f1c306985",
+  "sourceRevision": "b3ca31ea264d5dd233fd871ac167247f1c306985",
+  "releaseStatus": "immutable-source-snapshot; v1.2.0 tag not published at adoption",
+  "iconTreatment": "Evening",
+  "theme": "dark",
+  "exceptions": "docs/app-stylr-exceptions.md"
+}
