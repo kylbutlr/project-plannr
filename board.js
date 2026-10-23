@@ -2,6 +2,7 @@
 import {appendCompletedPage, appendLanePage, laneKey, nearLaneEnd, projectFolds, createPageGate, createReadGate, createTicketUpdates} from './board-client.js';
 import {priorityLevels, priorityLevel, compareActive, compareLane, boardSorts} from './ticket-priority.js';
 import {checklistItems, checklistProgress, checklistDiff, checklistLimit, checklistTextLimit} from './ticket-checklist.js';
+import {readPreferences,savePreferences,normalizePreferences,preferenceDefaults} from './workspace-preferences.js';
 const $=id=>document.getElementById(id);
 const names={A:'Kanban',B:'Project swimlanes',C:'Ranked queue'},viewKeys={A:'kanban',B:'swimlanes',C:'queue'};
 const stages={'next':'Next','in-progress':'In progress','completed':'Completed'},kinds={game:'Game',app:'App',other:'Other'};
@@ -10,6 +11,20 @@ const readGate=createReadGate(),pageGate=createPageGate();
 const changeGate=createReadGate();
 let foldStorage;try{foldStorage=localStorage;}catch{}
 const folds=projectFolds(foldStorage);
+let preferences=readPreferences(foldStorage);
+function applyPreferences(){
+ document.documentElement.dataset.appStylrTheme=preferences.theme;
+ document.documentElement.dataset.appStylrDensity=preferences.density;
+ $('workspace-title').textContent=preferences.workspaceName;
+ $('workspace-welcome').textContent=preferences.displayName?`${preferences.displayName}'s workspace. A clear view of what comes next.`:'A clear view of what comes next.';
+ for(const [id,key] of [['workspace','workspaceName'],['name','displayName'],['theme','theme'],['density','density'],['view','defaultView']])$('preference-'+id).value=preferences[key];
+}
+applyPreferences();
+const preferencePanel=$('workspace-settings');
+$('toggle-preferences').onclick=()=>{preferencePanel.open=!preferencePanel.open;};
+preferencePanel.addEventListener('toggle',()=>{$('toggle-preferences').setAttribute('aria-expanded',String(preferencePanel.open));});
+$('preferences-form').onsubmit=event=>{event.preventDefault();preferences=normalizePreferences({workspaceName:$('preference-workspace').value,displayName:$('preference-name').value,theme:$('preference-theme').value,density:$('preference-density').value,defaultView:$('preference-view').value});const saved=savePreferences(foldStorage,preferences);applyPreferences();$('preferences-message').textContent=saved?'Saved for this browser. Your default view applies next time you open the app.':'Applied for this visit. Browser storage is unavailable.';};
+$('reset-preferences').onclick=()=>{preferences={...preferenceDefaults};const saved=savePreferences(foldStorage,preferences);applyPreferences();$('preferences-message').textContent=saved?'Default preferences restored.':'Defaults applied for this visit. Browser storage is unavailable.';};
 const laneErrors=new Map();
 let laneObservers=[];
 const invalidateReads=()=>{readGate.invalidate();pageGate.invalidate();changeGate.invalidate();};
@@ -21,7 +36,8 @@ const updates=createTicketUpdates({getTicket:id=>state.tickets.find(t=>t.id===id
  }});
 try{savedView=localStorage.getItem('project-plannr:view');}catch{}
 const params=new URL(location.href).searchParams;
-let variant=Object.keys(viewKeys).find(key=>viewKeys[key]===params.get('view'))||params.get('variant')||savedView||'B';
+let hasDefaultPreference=false;try{hasDefaultPreference=Boolean(JSON.parse(foldStorage?.getItem('project-plannr:preferences:v1')||'{}').defaultView);}catch{}
+let variant=Object.keys(viewKeys).find(key=>viewKeys[key]===params.get('view'))||params.get('variant')||(hasDefaultPreference?Object.keys(viewKeys).find(key=>viewKeys[key]===preferences.defaultView):null)||savedView||'B';
 if(!names[variant])variant='B';
 let boardSort='default';try{const saved=localStorage.getItem('project-plannr:sort');if(boardSorts.includes(saved))boardSort=saved;}catch{}
 $('board-sort').value=boardSort;
