@@ -39,7 +39,7 @@ async function start() {
   const store = config.mode === 'demo' ? memoryStore(demoState()) : config.databaseUrl ? postgresStore(config.databaseUrl) : await fileStore(config.dataFile, emptyState());
   const server = createServer(application(store, config)); server.requestTimeout = 20000; server.headersTimeout = 15000;
   server.on('error', async error => {console.error(error.code === 'EADDRINUSE' ? 'Port is already in use. Choose another port; do not stop other previews.' : 'Server could not start.'); await store.close(); process.exitCode = 1;});
-  server.listen(config.port, '127.0.0.1', () => console.log(`Project Plannr: ${config.origin}/\n${config.mode === 'demo' ? 'Disposable demo. Data resets on restart.' : `Private workspace. ${config.databaseUrl ? 'Development database' : 'Local file'} storage; ${config.authConfigured ? 'owner sign-in configured' : 'sign-in setup required'}.`}\nCtrl+C stops only this server.`));
+  server.listen(config.port, '127.0.0.1', () => console.log(`Project Plannr: ${config.origin}/\n${config.mode === 'demo' ? 'Disposable demo. Data resets on restart.' : `Private workspace. ${config.databaseUrl ? 'Development database' : 'Local file'} storage; ${config.passwordless ? 'local passwordless access' : config.authConfigured ? 'owner sign-in configured' : 'sign-in setup required'}.`}\nCtrl+C stops only this server.`));
   let closing = false;
   const stop = () => {if (closing) return; closing = true; server.close(async () => {await store.close();}); server.closeIdleConnections();};
   process.once('SIGINT', stop); process.once('SIGTERM', stop);

@@ -1,9 +1,9 @@
 # Agent API contract
 
-This contract is implemented locally and at
-[Project Plannr](https://project-plannr.netlify.app), using the isolated Neon
-development database. All routes except the static sign-in shell and session
-checking and the password-login endpoint require server-verified identity.
+The local HTTP server and optional hosted adapter share this API. All workspace
+operations require verified identity. Explicit loopback passwordless mode grants
+local owner access while preserving the configured origin and CSRF requirement.
+Agent credentials remain separate, revocable, and scoped to assigned projects.
 
 ## Identity
 

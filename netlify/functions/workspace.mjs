@@ -6,7 +6,7 @@ export const config = {path: ['/api/*', '/auth/*']};
 
 // Factory is the test seam. Production cannot select a store from request input.
 export function netlifyApplication(settings, store) {
-  if (settings.mode !== 'private' || !settings.secure || !settings.databaseUrl || !settings.authConfigured) throw Error('Netlify requires HTTPS, database storage and the workspace password.');
+  if (settings.mode !== 'private' || !settings.secure || !settings.databaseUrl || !settings.authConfigured || settings.passwordless) throw Error('Netlify requires HTTPS, database storage and the workspace password.');
   const api = apiApplication(store, settings);
   return async (request, context) => {
     const url = new URL(request.url);
@@ -24,7 +24,7 @@ export default async (request, context) => {
     if (!handle) {
       const settings = configuration();
       // Reject local/demo configuration before creating any pool or touching data.
-      if (settings.mode !== 'private' || !settings.secure || !settings.databaseUrl || !settings.authConfigured) throw Error('Hosted setup is incomplete.');
+      if (settings.mode !== 'private' || !settings.secure || !settings.databaseUrl || !settings.authConfigured || settings.passwordless) throw Error('Hosted setup is incomplete.');
       handle = netlifyApplication(settings, postgresStore(settings.databaseUrl));
     }
     return await handle(request, context);
