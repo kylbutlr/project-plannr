@@ -1,8 +1,9 @@
 # Project Plannr
 
-Kyle's private visual planning workspace for multiple games, applications, and
-other projects. Independent project agents should read the same priorities and
-work ownership as Kyle, without maintaining separate editable ledgers.
+A self-hosted planning workspace for one owner and their project-scoped agents,
+covering applications, games, and other projects. The public source supports
+local persistent storage, optional loopback passwords, and explicitly configured
+private hosted access. Projects and credentials remain private to each installation.
 
 ## Approved direction
 
@@ -32,7 +33,10 @@ work ownership as Kyle, without maintaining separate editable ledgers.
 - Remote changes display an Updates available notice instead of automatically
   replacing the board. Open drafts and expanded pages stay intact until an
   explicit refresh, which resets columns to their first page.
-- Preserve the approved App Stylr dark interface, not a redesign.
+- Preserve the App Stylr charcoal/mint identity, with the user-approved public
+  interface refresh: clearer navigation, form flow, comfortable spacing, readable
+  displays, and consistent native dropdown controls. Browser-local workspace and
+  display names, optional light mode, density, and default view are customizable.
 - Remember me is opt-in for 30 days from sign-in on that browser. Otherwise use
   a session cookie with an eight-hour absolute server limit. Restore valid sessions
   on startup; Sign out revokes access immediately without retaining a password.

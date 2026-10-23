@@ -28,3 +28,7 @@ corner radius, with a product-owned three-column planning glyph. It is a
 self-contained square SVG with deterministic 16px/32px PNG fallbacks generated
 by the unmodified pinned App Stylr exporter. All three assets are whitelisted
 for local serving and Netlify publication. No PWA or installation behavior was added.
+
+## Public interface refresh
+
+The product retains its charcoal/mint identity and uses a local candidate of the optional shared controls recipe from the App Stylr v1.3.0 refresh. Workspace labels, density, default views and storage behavior remain product-owned. Browser-local display names never alter server authentication or audit identity. Fresh visual review remains pending browser authority.

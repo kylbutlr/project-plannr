@@ -12,14 +12,15 @@ test('publish build is a whitelist and refuses unexpected leftover files', async
   t.after(() => rm(directory, {recursive: true, force: true}));
   await mkdir(join(directory, 'vendor/app-stylr/adapters/css'), {recursive: true});
   await mkdir(join(directory, 'vendor/app-stylr/assets/fonts'), {recursive: true});
+  await mkdir(join(directory, 'vendor/app-stylr/styles'), {recursive: true});
   await mkdir(join(directory, 'assets'), {recursive: true});
-  const sources = ['prototype.html', 'board.js', 'board-client.js', 'ticket-priority.js', 'ticket-checklist.js', 'board.css', 'vendor/app-stylr/adapters/css/app-stylr.css', 'vendor/app-stylr/assets/fonts/Geist-Variable.woff2', 'assets/app-icon.svg', 'assets/favicon-16.png', 'assets/favicon-32.png'];
+  const sources = ['workspace-preferences.js', 'vendor/app-stylr/styles/controls.css', 'prototype.html', 'board.js', 'board-client.js', 'ticket-priority.js', 'ticket-checklist.js', 'board.css', 'vendor/app-stylr/adapters/css/app-stylr.css', 'vendor/app-stylr/assets/fonts/Geist-Variable.woff2', 'assets/app-icon.svg', 'assets/favicon-16.png', 'assets/favicon-32.png'];
   for (const source of sources) await writeFile(join(directory, source), 'public fixture');
   for (const secret of ['.env', 'server.mjs', 'workspace.json']) await writeFile(join(directory, secret), 'PRIVATE-FIXTURE');
   const script = fileURLToPath(new URL('../scripts/build.mjs', import.meta.url)), run = promisify(execFile);
   await run(process.execPath, [script], {cwd: directory});
   const published = await readdir(join(directory, 'dist'));
-  assert.deepEqual(published.sort(), ['board.css', 'board.js', 'board-client.js', 'ticket-priority.js', 'ticket-checklist.js', 'index.html', 'prototype.html', 'sans.woff2', 'tokens.css', 'app-icon.svg', 'favicon-16.png', 'favicon-32.png'].sort());
+  assert.deepEqual(published.sort(), ['workspace-preferences.js', 'controls.css', 'board.css', 'board.js', 'board-client.js', 'ticket-priority.js', 'ticket-checklist.js', 'index.html', 'prototype.html', 'sans.woff2', 'tokens.css', 'app-icon.svg', 'favicon-16.png', 'favicon-32.png'].sort());
   for (const file of published) assert.doesNotMatch(await readFile(join(directory, 'dist', file), 'utf8'), /PRIVATE-FIXTURE/);
   // Netlify adds its resolved configuration to published artifacts, then restores
   // it with dist on the next cached build. It is not an application asset.

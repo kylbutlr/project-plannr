@@ -8,7 +8,7 @@ import {apiApplication, bodyJSON, securityHeaders} from './lib/api.mjs';
 import {demoState} from './lib/demo.mjs';
 
 const root = new URL('./', import.meta.url);
-const files = new Map([['/', 'prototype.html'], ['/prototype.html', 'prototype.html'], ['/board.js', 'board.js'], ['/board-client.js', 'board-client.js'], ['/ticket-priority.js', 'ticket-priority.js'], ['/ticket-checklist.js', 'ticket-checklist.js'], ['/board.css', 'board.css'],
+const files = new Map([['/', 'prototype.html'], ['/prototype.html', 'prototype.html'], ['/board.js', 'board.js'], ['/board-client.js', 'board-client.js'], ['/workspace-preferences.js', 'workspace-preferences.js'], ['/controls.css', 'vendor/app-stylr/styles/controls.css'], ['/ticket-priority.js', 'ticket-priority.js'], ['/ticket-checklist.js', 'ticket-checklist.js'], ['/board.css', 'board.css'],
   ['/tokens.css', 'vendor/app-stylr/adapters/css/app-stylr.css'], ['/sans.woff2', 'vendor/app-stylr/assets/fonts/Geist-Variable.woff2'],
   ['/app-icon.svg', 'assets/app-icon.svg'], ['/favicon-16.png', 'assets/favicon-16.png'], ['/favicon-32.png', 'assets/favicon-32.png']]);
 export function application(store, config, dependencies = {}) {

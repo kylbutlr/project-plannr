@@ -3,7 +3,7 @@ import {copyFile, mkdir, readdir, unlink} from 'node:fs/promises';
 // A whitelist, never the repository root. Secrets and backend source cannot publish.
 const files = new Map([
   ['index.html', 'prototype.html'], ['prototype.html', 'prototype.html'],
-  ['board.js', 'board.js'], ['board-client.js', 'board-client.js'], ['board.css', 'board.css'],
+  ['workspace-preferences.js', 'workspace-preferences.js'], ['controls.css', 'vendor/app-stylr/styles/controls.css'], ['board.js', 'board.js'], ['board-client.js', 'board-client.js'], ['board.css', 'board.css'],
   ['ticket-priority.js', 'ticket-priority.js'], ['ticket-checklist.js', 'ticket-checklist.js'],
   ['tokens.css', 'vendor/app-stylr/adapters/css/app-stylr.css'],
   ['sans.woff2', 'vendor/app-stylr/assets/fonts/Geist-Variable.woff2'],

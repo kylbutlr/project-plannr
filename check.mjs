@@ -17,11 +17,11 @@ try{
  });
  const original=(await send('/api/state')).body;
  const page=await fetch(base+'/');assert.equal(page.status,200);assert.match(await page.text(),/<title>Project Plannr<\/title>/);
- for(const path of ['/board.js','/board.css','/tokens.css','/sans.woff2','/app-icon.svg','/favicon-16.png','/favicon-32.png']){
+ for(const path of ['/board.js','/workspace-preferences.js','/board.css','/controls.css','/tokens.css','/sans.woff2','/app-icon.svg','/favicon-16.png','/favicon-32.png']){
   const asset=await fetch(base+path);assert.equal(asset.status,200,path);assert.ok((await asset.arrayBuffer()).byteLength>0,path);
  }
  assert.equal(original.projects.length,2);
- assert.ok(original.projects.every(p=>p.kind==='game'&&!p.archived&&p.revision===1));
+ assert.ok(original.projects.every(p=>p.kind==='app'&&!p.archived&&p.revision===1));
  const created=await send('/api/projects','POST',{name:'Test app',kind:'app'});
  assert.equal(created.status,201);const id=created.body.id;
  const madeTicket=await send('/api/tickets','POST',{project:id,title:'Keep this ticket'});
