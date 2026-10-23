@@ -203,6 +203,24 @@ test('actual CLI imports via owner password, verifies receipts, grants scoped ac
   assert.equal(await readFile(join(fixture.repo, 'roadmap.md'), 'utf8'), 'Fixture source ledger\n');
 });
 
+test('passwordless loopback onboarding imports and grants scoped access without login', async t => {
+  const fixture = await repoFixture(), store = memoryStore();
+  const config = configuration({PLANNR_AUTH_MODE: 'none'});
+  const server = createServer(application(store, config)); server.listen(0, '127.0.0.1'); await once(server, 'listening');
+  config.origin = `http://127.0.0.1:${server.address().port}`;
+  t.after(async () => {server.closeAllConnections(); await new Promise(resolve => server.close(resolve));});
+  const options = onboardingArgs(['--repo', fixture.repo, '--manifest', fixture.path, '--origin', config.origin, '--apply', '--issue-agent']);
+  const result = await onboardingRun(options, {password: undefined, backupRoot: join(fixture.directory, 'backups'), fetcher: (url, options) => {
+    assert.ok(!url.includes('/auth/'), 'local access does not create or destroy a password session');
+    return fetch(url, options);
+  }});
+  assert.equal(result.created, 3);
+  const access = await planningAccess(result.credentialFile);
+  assert.deepEqual(access.projects, [result.projectId]);
+  assert.equal((await store.read()).sessions.length, 0);
+  assert.equal((await planningRun(['board'], result.credentialFile)).projects[0].id, result.projectId);
+});
+
 test('access rejects symlinks, public permissions, expiry and multi-project credentials', async () => {
   const dir = await realpath(await mkdtemp(join(tmpdir(), 'plannr-access-'))), file = join(dir, 'agent.json');
   const value = {origin: 'https://example.com', projects: ['app'], token: `plnr_${'a'.repeat(43)}`, expiresAt: Date.now() + 100000};

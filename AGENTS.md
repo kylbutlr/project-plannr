@@ -1,7 +1,7 @@
 # Project Plannr agent instructions
 
-Read README.md and PRODUCT.md before implementation. This is a hosted private
-development application using an isolated database branch. Preserve the approved views and
+Read README.md and PRODUCT.md before implementation. This is a self-hosted planning application with optional private hosted
+access using an explicitly configured isolated database branch. Preserve the approved views and
 project management. Do not turn illustrative Worldrawn or Track Forgr tickets
 into claims about actual project state.
 

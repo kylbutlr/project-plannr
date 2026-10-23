@@ -6,6 +6,8 @@ ledger filename. The earlier Worldrawn migration remains a historical adapter.
 
 The offline preview works without a server. Applying an import or issuing an
 agent credential is an explicit owner action against the configured workspace.
+The CLI uses the owner CSRF token from an explicitly passwordless loopback server.
+Password-protected servers require `PLANNR_PASSWORD` privately in the environment.
 Use fictional data for rehearsals and retain a backup before importing real work.
 
 ## 1. Prepare a complete manifest
@@ -65,7 +67,7 @@ manifests must fit the 512 KiB import request limit; local files are capped at
 From any terminal, substituting the actual repository and manifest paths:
 
 ```sh
-npm --prefix /Users/kylebutler/Documents/sites/project-plannr run onboard -- \
+npm --prefix /absolute/path/to/project-plannr run onboard -- \
   --repo /absolute/path/to/project \
   --manifest /absolute/path/to/project/plannr-import.json
 ```
@@ -77,7 +79,8 @@ the summary. Live collision and concurrency checks happen during an apply.
 
 ## 3. Apply with the owner's one-time authorization
 
-Use the existing owner password privately in your terminal. Do not paste it into
+For a password-protected server, use its owner password privately in your terminal.
+Skip this password step for an explicitly passwordless loopback server. Do not paste it into
 chat, put it in command arguments, or give it to the ongoing project agent.
 For Bash or Zsh, this reads it without showing it or storing it in shell history:
 
@@ -89,22 +92,22 @@ export PLANNR_PASSWORD
 Type the password and press Enter. Run the reviewed import:
 
 ```sh
-npm --prefix /Users/kylebutler/Documents/sites/project-plannr run onboard -- \
+npm --prefix /absolute/path/to/project-plannr run onboard -- \
   --repo /absolute/path/to/project \
   --manifest /absolute/path/to/project/plannr-import.json \
   --apply
 unset PLANNR_PASSWORD
 ```
 
-The default destination is [Project Plannr](https://project-plannr.netlify.app/?view=swimlanes).
-For disposable local verification, pass `--origin http://127.0.0.1:4205` to a
-private server with its own configured owner password. Never run a real import
+The default destination is [your local Project Plannr](http://127.0.0.1:4205/).
+Use `--origin` for a different configured origin. The importer accepts explicit
+passwordless loopback access or a password-protected owner session. Never run a real import
 in demo mode; demo IDs and storage are deliberately disposable.
 
-The command signs in through the existing password API, checks CSRF, saves a
+The command obtains the owner CSRF token, signing in when required, saves a
 live project-only backup, then creates the project and missing tickets in one
 transaction. It reads each imported ticket back before reporting verification.
-It signs out its own setup session afterward, without closing other sessions.
+When it creates a password session, it signs out that session afterward without closing other sessions.
 No database URL is needed in the importing repo.
 
 Existing source IDs with identical imported content are preserved, including
@@ -129,10 +132,10 @@ The saved operation key can also replay an identical API request for 24 hours.
 This is a separate explicit grant. Before adding `--issue-agent`, ensure the
 target repo ignores `.plannr/` in its `.gitignore`, and no `.plannr` files are
 already tracked. The command refuses to overwrite any existing `agent.json`.
-Existing access, including Worldrawn's, does not need replacement.
+Existing scoped access does not need replacement.
 
 ```sh
-npm --prefix /Users/kylebutler/Documents/sites/project-plannr run onboard -- \
+npm --prefix /absolute/path/to/project-plannr run onboard -- \
   --repo /absolute/path/to/project \
   --manifest /absolute/path/to/project/plannr-import.json \
   --apply --issue-agent
@@ -157,13 +160,13 @@ The reusable command reads only that repo's scoped credential. It does not load
 the owner's `.env`, need database access, or silently grant access:
 
 ```sh
-npm --prefix /Users/kylebutler/Documents/sites/project-plannr run roadmap -- \
+npm --prefix /absolute/path/to/project-plannr run roadmap -- \
   --repo /absolute/path/to/project
 
-npm --prefix /Users/kylebutler/Documents/sites/project-plannr run roadmap -- \
+npm --prefix /absolute/path/to/project-plannr run roadmap -- \
   --repo /absolute/path/to/project backlog
 
-npm --prefix /Users/kylebutler/Documents/sites/project-plannr run roadmap -- \
+npm --prefix /absolute/path/to/project-plannr run roadmap -- \
   --repo /absolute/path/to/project show TICKET_ID
 ```
 
@@ -172,7 +175,7 @@ lists Next items in priority order. `show` reads an exact ticket. Explicit
 `claim`, `renew`, `release`, and `note` commands require the latest revision:
 
 ```sh
-npm --prefix /Users/kylebutler/Documents/sites/project-plannr run roadmap -- \
+npm --prefix /absolute/path/to/project-plannr run roadmap -- \
   --repo /absolute/path/to/project note TICKET_ID REVISION "Progress and evidence"
 ```
 

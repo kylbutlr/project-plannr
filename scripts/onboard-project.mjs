@@ -57,7 +57,6 @@ export async function onboardingRun(options, {password = process.env.PLANNR_PASS
   const summary = {project: plan.project, tickets: plan.tickets.length, statuses: Object.fromEntries(['next', 'in-progress', 'completed'].map(status => [status, plan.tickets.filter(row => row.status === status).length])),
     sourceNamespace: plan.source.namespace, sourceFilesVerified: source.sources.map(row => row.path), planHash: plan.hash};
   if (!options.apply) return {mode: 'offline preview', ...summary, items: plan.tickets.map(({sourceId, title, status, priority, priorityLevel}) => ({sourceId, title, status, priority, priorityLevel: priorityLevel ?? 'P2'})), next: 'Review full manifest coverage and status mapping. --apply signs in, checks live collisions, backs up, imports atomically, and verifies. No live data has been read or changed.'};
-  if (typeof password !== 'string' || password.length < 16 || password.length > 256) throw Error('Set PLANNR_PASSWORD privately in the terminal, not a command argument.');
   // Reserve ignored local access storage BEFORE making any remote changes.
   let credentialFile, reserved;
   if (options.issueAgent) {
@@ -82,10 +81,17 @@ export async function onboardingRun(options, {password = process.env.PLANNR_PASS
     if (await realpath(backupRoot) !== resolve(backupRoot)) throw Error('Backup path must not contain symlinks.');
     const operation = randomUUID(), backup = resolve(backupRoot, operation); await privateDirectory(backup);
     await saveJSON(resolve(backup, 'source.json'), {manifest, sources: source.sources});
-    const login = await request('/auth/login', 'POST', {password});
-    cookie = login.headers.get('set-cookie')?.split(';')[0];
-    if (!cookie) throw Error('Owner sign-in did not return a session.');
-    csrf = (await (await request('/api/session')).json()).csrf;
+    let session = await (await request('/api/session')).json();
+    const localOwner = session.authMode === 'none' && session.user && session.csrf
+      && ['127.0.0.1', 'localhost'].includes(new URL(options.origin).hostname);
+    if (!localOwner) {
+      if (typeof password !== 'string' || password.length < 16 || password.length > 256) throw Error('Set PLANNR_PASSWORD privately in the terminal, not a command argument.');
+      const login = await request('/auth/login', 'POST', {password});
+      cookie = login.headers.get('set-cookie')?.split(';')[0];
+      if (!cookie) throw Error('Owner sign-in did not return a session.');
+      session = await (await request('/api/session')).json();
+    }
+    csrf = session.csrf;
     if (!csrf) throw Error('Owner session is unavailable.');
     const preview = await (await request('/api/imports/preview', 'POST', {manifest})).json();
     if (preview.planHash !== plan.hash) throw Error('Server and local import plans differ.');
@@ -116,7 +122,7 @@ export async function onboardingRun(options, {password = process.env.PLANNR_PASS
       next: 'Review the board and backup before removing a repo ledger. This command never deletes source files.'};
   } catch (error) {
     // If issuance completed but local persistence failed, revoke only this operation's grant.
-    if (agentName && cookie && csrf) {
+    if (agentName && csrf) {
       try {
         const agents = await (await request('/api/agents')).json();
         for (const agent of agents.filter(row => row.name === agentName && !row.revoked)) await request(`/api/agents/${agent.id}/revoke`, 'POST', {});
@@ -132,7 +138,7 @@ export async function onboardingRun(options, {password = process.env.PLANNR_PASS
 
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
   try {
-    if (process.argv.slice(2).join(' ') === '--help') console.log('Usage: npm run onboard -- --repo /absolute/project --manifest /absolute/manifest.json [--origin HTTPS_OR_LOOPBACK_ORIGIN] [--apply [--issue-agent]]\nDefault: offline preview. Apply uses PLANNR_PASSWORD privately from the environment. No ledger deletion, push, or deployment. See docs/project-onboarding.md.');
+    if (process.argv.slice(2).join(' ') === '--help') console.log('Usage: npm run onboard -- --repo /absolute/project --manifest /absolute/manifest.json [--origin HTTPS_OR_LOOPBACK_ORIGIN] [--apply [--issue-agent]]\nDefault: offline preview. Apply uses explicit local access or PLANNR_PASSWORD privately from the environment. No ledger deletion, push, or deployment. See docs/project-onboarding.md.');
     else console.log(JSON.stringify(await onboardingRun(onboardingArgs(process.argv.slice(2))), null, 2));
   }
   catch (error) {
