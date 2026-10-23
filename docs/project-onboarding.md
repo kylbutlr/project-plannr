@@ -4,11 +4,9 @@ One shared implementation works for Game, App, and Other projects. Nothing in
 the new importer or roadmap client names Worldrawn or assumes a particular
 ledger filename. The earlier Worldrawn migration remains a historical adapter.
 
-The matching owner-only import backend was published on October 1, 2026 at
-[Project Plannr](https://project-plannr.netlify.app/?view=swimlanes).
-[Hosted read-only verification](hosted-board-verification.md) confirmed import
-preview without creating a project or ticket. Apply and credential issuance
-remain separately approved actions. The offline preview works without a server.
+The offline preview works without a server. Applying an import or issuing an
+agent credential is an explicit owner action against the configured workspace.
+Use fictional data for rehearsals and retain a backup before importing real work.
 
 ## 1. Prepare a complete manifest
 

@@ -12,7 +12,7 @@ const exec = promisify(execFile), root = fileURLToPath(new URL('../', import.met
 const git = async (repo, args) => (await exec('git', ['-C', repo, ...args], {maxBuffer: 2097152})).stdout;
 
 export function onboardingArgs(args) {
-  const options = {origin: 'https://project-plannr.netlify.app', apply: false, issueAgent: false};
+  const options = {origin: process.env.PLANNR_ORIGIN || `http://127.0.0.1:${process.env.PROJECT_PLANNR_PORT || 4205}`, apply: false, issueAgent: false};
   for (let i = 0; i < args.length; i++) {
     if (args[i] === '--apply') options.apply = true;
     else if (args[i] === '--issue-agent') options.issueAgent = true;

@@ -94,8 +94,8 @@ async function checkSession(){
    lock(authReady?'Enter your workspace password to open your private board.':'Set PLANNR_PASSWORD in the server environment, then restart the server. The board stays locked until the password is configured.');return;
   }
   session=next;$('session-panel').hidden=true;$('private-board').hidden=$('header-controls').hidden=false;
-  $('sign-out').hidden=next.mode==='demo';
- $('boundary').textContent=next.mode==='demo'?'Disposable local demo. These example tickets reset on restart. Real repository ledgers stay untouched.':`Signed in as ${next.user.name}. ${next.storage==='database'?'Development database':'Local file'} storage is durable.`;
+  $('sign-out').hidden=next.mode==='demo'||next.authMode==='none';
+ $('boundary').textContent=next.mode==='demo'?'Disposable local demo. These example tickets reset on restart. Real repository ledgers stay untouched.':`${next.authMode==='none'?'Local access without a password':`Signed in as ${next.user.name}`}. ${next.storage==='database'?'Database':'Local file'} storage is durable.`;
   $('activity-boundary').textContent=next.mode==='demo'?'Illustrative activity only. No real agent has been assigned.':'Browser and agent changes share the same transaction history. Actor identity is verified by the server.';
   await load(true);
  }catch(error){if(version===epoch){lock(error.message);$('session-heading').textContent='Connection unavailable';}}

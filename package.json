@@ -1,11 +1,11 @@
 {
   "name": "project-plannr",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "A private project planning workspace for people and project-scoped agents.",
+  "description": "Self-hosted project planning for people and project-scoped agents.",
   "engines": {
-    "node": ">=20.12"
+    "node": ">=22.13.0"
   },
   "scripts": {
     "dev": "node server.mjs",
@@ -19,12 +19,15 @@
     "db:check": "node scripts/database-check.mjs",
     "agent": "node agent.mjs",
     "onboard": "node scripts/onboard-project.mjs",
-    "roadmap": "node scripts/roadmap.mjs"
+    "roadmap": "node scripts/roadmap.mjs",
+    "start:local": "PLANNR_AUTH_MODE=none node server.mjs",
+    "package": "node scripts/package-release.mjs"
   },
   "dependencies": {
     "pg": "8.23.1"
   },
   "devDependencies": {
     "app-stylr": "file:vendor/app-stylr"
-  }
+  },
+  "license": "MIT"
 }
