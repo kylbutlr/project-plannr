@@ -90,3 +90,13 @@ test('checklist draft retries an unrelated note once, but never overwrites anoth
   else{await h.updates.update(base.id,patch,base);assert.equal(writes,2);}
  }
 });
+
+test('change read gate suppresses overlap, aborts obsolete reads, and never releases a newer request',async()=>{
+  const {createChangeGate}=await import('../board-client.js');
+  const gate=createChangeGate(),first=gate.begin();
+  assert.ok(first);assert.equal(gate.begin(),null);assert.equal(first.signal.aborted,false);
+  gate.invalidate();assert.equal(first.signal.aborted,true);assert.equal(gate.accept(first),false);
+  const next=gate.begin();gate.finish(first);assert.equal(gate.begin(),null);
+  assert.equal(gate.accept(next),true);gate.finish(next);
+  assert.equal(gate.accept(next),false);assert.ok(gate.begin());
+});
