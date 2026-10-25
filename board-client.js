@@ -6,6 +6,18 @@ export function createReadGate() {
     accept: token => token.generation === generation && token.sequence === sequence};
 }
 
+// A revision request is useful only for its current board snapshot. Coalesce
+// timer/visibility/reconnect triggers and abort it when that snapshot changes.
+export function createChangeGate() {
+  let pending;
+  return {
+    begin() {if (pending) return null; pending = new AbortController(); return pending;},
+    accept: token => pending === token && !token.signal.aborted,
+    finish(token) {if (pending === token) pending = null;},
+    invalidate() {pending?.abort(); pending = null;},
+  };
+}
+
 // Independent lane reads may finish in any order. Filters, mutations and sign-out
 // invalidate all lanes together, without making one project cancel another.
 export function createPageGate() {

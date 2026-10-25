@@ -1,5 +1,5 @@
 // Three approved views share one authenticated workspace.
-import {appendCompletedPage, appendLanePage, laneKey, nearLaneEnd, projectFolds, createPageGate, createReadGate, createTicketUpdates} from './board-client.js';
+import {appendCompletedPage, appendLanePage, laneKey, nearLaneEnd, projectFolds, createPageGate, createReadGate, createChangeGate, createTicketUpdates} from './board-client.js';
 import {priorityLevels, priorityLevel, compareActive, compareLane, boardSorts} from './ticket-priority.js';
 import {checklistItems, checklistProgress, checklistDiff, checklistLimit, checklistTextLimit} from './ticket-checklist.js';
 import {readPreferences,savePreferences,normalizePreferences,preferenceDefaults} from './workspace-preferences.js';
@@ -8,7 +8,7 @@ const names={A:'Kanban',B:'Project swimlanes',C:'Ranked queue'},viewKeys={A:'kan
 const stages={'next':'Next','in-progress':'In progress','completed':'Completed'},kinds={game:'Game',app:'App',other:'Other'};
 let state={projects:[],tickets:[],activity:[]},selected,dragged,savedView,session,epoch=0,lastActivity=Date.now(),loading=false,draftBase,draftChecklist=[],completedSearch='',reloadWanted=false;
 const readGate=createReadGate(),pageGate=createPageGate();
-const changeGate=createReadGate();
+const changeGate=createChangeGate();
 let foldStorage;try{foldStorage=localStorage;}catch{}
 const folds=projectFolds(foldStorage);
 let preferences=readPreferences(foldStorage);
@@ -74,6 +74,7 @@ async function load(force=false){
  if(pageGate.pending){if(force)reloadWanted=true;return;}
  if(!session?.user||updates.pending||!force&&(loading||$('detail').open||state.completed?.expanded||Object.values(state.lanes||{}).some(page=>page.expanded)))return;
  pageGate.invalidate();
+ changeGate.invalidate();
  const version=epoch,token=readGate.begin();loading=true;
  try{
   const response=await fetch(`/api/board?${boardParams()}`);if(version!==epoch||!readGate.accept(token))return;
@@ -293,11 +294,20 @@ $('create').onsubmit=async e=>{
 $('session-retry').onclick=()=>void checkSession();$('refresh-board').onclick=()=>void load(true);
 $('apply-updates').onclick=()=>void load(true);
 async function checkChanges(){
- if(!session?.user||loading||updates.pending||!state.changeToken)return;
+ if(!session?.user||document.hidden||navigator.onLine===false||loading||updates.pending||!state.changeToken||!$('board-updates').hidden)return;
  const version=epoch,token=changeGate.begin(),baseline=state.changeToken;
- try{const result=await request(`/api/changes?project=${encodeURIComponent($('project').value||'all')}`);
+ if(!token)return;
+ const timeout=setTimeout(()=>token.abort(),30000);
+ try{
+  const response=await fetch(`/api/changes?project=${encodeURIComponent($('project').value||'all')}`,{signal:token.signal});
+  if(version!==epoch||!changeGate.accept(token))return;
+  if(response.status===401){lock('Your session expired. Sign in again to continue.');return;}
+  if(response.status===404){$('board-updates').hidden=false;return;}
+  if(!response.ok)return;
+  const result=await response.json();
   if(version===epoch&&changeGate.accept(token)&&state.changeToken===baseline)$('board-updates').hidden=result.changeToken===baseline;
- }catch(error){if(version===epoch&&changeGate.accept(token)&&error.status===404){$('board-updates').hidden=false;}}
+ }catch{/* A failed background read retries on the next normal interval. */}
+ finally{clearTimeout(timeout);changeGate.finish(token);}
 }
 $('sign-in').onsubmit=async e=>{
  e.preventDefault();const button=$('unlock-workspace'),input=$('workspace-password'),choice=$('remember-me'),password=input.value,remember=choice.checked;button.disabled=choice.disabled=true;input.value='';
@@ -308,4 +318,7 @@ $('sign-in').onsubmit=async e=>{
 $('sign-out').onclick=async()=>{const button=$('sign-out');button.disabled=true;try{await request('/auth/logout','POST',{});lock('You signed out. Sign in again to reopen your private board.');}catch(error){$('message').textContent=error.message;}finally{button.disabled=false;}};
 for(const event of ['pointerdown','keydown','wheel'])document.addEventListener(event,()=>{lastActivity=Date.now();},{passive:true});
 await checkSession();setInterval(()=>{if(session?.user&&!document.hidden&&Date.now()-lastActivity<180000)void checkChanges();},30000);
-document.addEventListener('visibilitychange',()=>{if(!document.hidden){lastActivity=Date.now();void checkChanges();}});
+document.addEventListener('visibilitychange',()=>{if(document.hidden)changeGate.invalidate();else{lastActivity=Date.now();void checkChanges();}});
+window.addEventListener('offline',()=>changeGate.invalidate());
+window.addEventListener('online',()=>{if(!document.hidden){lastActivity=Date.now();void checkChanges();}});
+window.addEventListener('pagehide',()=>changeGate.invalidate());
