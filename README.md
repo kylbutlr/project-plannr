@@ -14,6 +14,12 @@ activity in the same workspace.
 [Agent API](docs/agent-api.md) ·
 [Report an issue](https://github.com/kylbutlr/project-plannr/issues)
 
+## Preview
+
+<img src="docs/images/app-preview.webp" width="640" alt="Project Plannr showing fictional Fieldnotes and Atlas projects in a Kanban board with ticket priorities and status controls">
+
+App preview with demo data. [App overview](https://kylbutlr.com/apps/project-plannr).
+
 ## Availability
 
 Project Plannr is open-source under the MIT license. Versioned GitHub downloads
