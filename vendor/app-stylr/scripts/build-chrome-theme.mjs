@@ -216,7 +216,7 @@ async function main() {
   const options = parseArguments(process.argv.slice(2));
   const themeRoot = options.output;
   const tokens = await readTokens();
-  const iconSource = path.join(repoRoot, "assets", "app-icon-gradient-base.svg");
+  const iconSource = path.join(repoRoot, "assets", "app-icon-flat-base.svg");
   const backgroundSvg = renderBackgroundSvg(tokens, 2560, 1440);
   const previewSvg = renderPreviewSvg(tokens);
   const rasterSourceHash = createHash("sha256")

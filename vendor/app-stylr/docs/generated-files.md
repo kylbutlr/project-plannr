@@ -5,7 +5,7 @@
 | Source | Generated output | Command |
 | --- | --- | --- |
 | `tokens/app-stylr.json` | CSS and Swift adapters | `npm run build` |
-| `assets/example-app-icon.svg` | Reference icon PNGs | `npm run icons` |
+| `assets/example-app-icon.svg` and `assets/example-app-icon-16.svg` | Reference icon PNGs | `npm run icons` |
 | tokens and public icon assets | Unpacked Chrome theme | `npm run chrome-theme` |
 | reference source and public assets | `.site/` or another requested output directory | `npm run site` or `app-stylr-reference` |
 

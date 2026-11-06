@@ -6,8 +6,8 @@ const files = new Map([
   ['workspace-preferences.js', 'workspace-preferences.js'], ['controls.css', 'vendor/app-stylr/styles/controls.css'], ['board.js', 'board.js'], ['board-client.js', 'board-client.js'], ['board.css', 'board.css'],
   ['ticket-priority.js', 'ticket-priority.js'], ['ticket-checklist.js', 'ticket-checklist.js'],
   ['tokens.css', 'vendor/app-stylr/adapters/css/app-stylr.css'],
-  ['sans.woff2', 'vendor/app-stylr/assets/fonts/Geist-Variable.woff2'],
-  ['app-icon.svg', 'assets/app-icon.svg'], ['favicon-16.png', 'assets/favicon-16.png'], ['favicon-32.png', 'assets/favicon-32.png'],
+  ['sans.woff2', 'vendor/app-stylr/assets/fonts/Geist-Variable.woff2'], ['mono.woff2', 'vendor/app-stylr/assets/fonts/GeistMono-Variable.woff2'],
+  ['app-icon.svg', 'assets/app-icon.svg'], ['favicon-16.png', 'assets/favicon-16.png'], ['favicon-32.png', 'assets/favicon-32.png'], ['icon-128.png', 'assets/app-icon-128.png'], ['icon-512.png', 'assets/app-icon-512.png'],
 ]);
 await mkdir('dist', {recursive: true});
 // Netlify restores its generated config with dist on subsequent hosted builds.

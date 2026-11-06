@@ -2,15 +2,58 @@
 
 All notable public changes to App Stylr are documented here. The project follows [Semantic Versioning](https://semver.org/).
 
-## Unreleased
+## [1.4.1] - 2026-11-05
+
+### Fixed
+
+- Use the blank monochrome Graphite tile for the Reference favicon, including its PNG fallback. Keep the checkmark only in the separate icon examples. Both root and subpath Reference builds use the same artwork and refreshed favicon cache key.
+
+## [1.4.0] - 2026-11-05
 
 ### Added
 
-- Optional Balanced composition guidance for transparent headers, charcoal surface reveals, stable navigation, darker background media, and reduced-motion behavior. Shared tokens and generated adapters are unchanged.
+- A subtle monochrome icon base and canonical gradient roles for palette-independent graphite artwork. Flat charcoal and legacy Evening gradient assets remain available.
+- A live app specimen beside the Colors palette chooser, showing the selected accent, surface tone, theme and density in a responsive workspace with a sidebar, form controls and selected rows.
 
 ### Changed
 
-- Updated the optional icon gradient and generated exports to the approved C / Evening treatment, retaining the original broad gradient with darker, less saturated colors. Added self-contained favicon and small-size guidance.
+- Give the example icon and Reference favicon a restrained graphite gradient while preserving their foreground drawings and actual-size rendering.
+
+## [1.3.0] - 2026-11-05
+
+### Added
+
+- Six named accent palettes in JSON, generated CSS, and Swift: Sage (the original default), Ember, Slate, Royal, Amber, and Monochrome. Canonical display names are shared by the Reference and Swift.
+- Independent Lighter, Normal, and Darker surface tones for both themes, with a Reference selector, CSS attributes, a typed Swift composition method, and contrast checks for every combination.
+- Opt-in native form-control CSS with enhanced picker styling, keyboard/native fallback behavior, density, and validation states.
+- A responsive Reference workbench with live specimens, section navigation, token inspection, theme/density/accent selectors, and canonical downloads. Display selections appear in its URL; form values stay in memory.
+- A reusable flat icon base, canonical icon foreground/background colors, and an optional `--source-16` compact drawing for icon generation.
+- CLI regressions for compact icon exports, safe output handling, portable host paths, repeat builds, and preservation of unrelated files.
+- Accent, form-control, migration, and optional text-wrapping/Balanced composition guidance.
+- A Visual Reference snapshot near the top of the README.
+
+### Changed
+
+- Apply the Precise type scale and weights, 4px control/button and 8/12px card/dialog radii, and 140/200ms control/panel motion. The original default theme maps and base brand colors are unchanged.
+- Use neutral surfaces and borders for all quiet feedback messages, with semantic colors on text and icons.
+- Recommend flat charcoal icon tiles with light identifying glyphs, independent of interface accent palettes. Legacy gradient assets and tokens remain available for compatibility.
+- Include the workbench module and canonical tokens/schema in portable Reference builds for root and subpath hosts.
+- Keep dark mode as the default, with product-owned light mode and accent switching.
+- Separate active palette roles from the original Sage primitives in a collapsed Brand reference section.
+- Use near-black action/selection fills in Monochrome dark mode and near-white fills in light mode, with contrasting labels, links, focus rings, and text carets.
+- Give Ember a warmer fire-red accent and Amber a muted champagne-gold accent.
+- Make Compact density reduce specimen padding, form gaps, row spacing, and section rhythm; retain 44px controls on touch devices.
+- Align package, consumer, Reference, and Swift instructions to v1.3.0, with separate verification of release channels.
+
+### Fixed
+
+- Use symmetric 12px enhanced-select insets while retaining the native fallback arrow allowance.
+- Match the specimen header to the card’s inner corner radius so its background does not obscure the rounded border.
+- Reject source-directory overlap, unrelated output files, Git metadata, dependencies, and symbolic links before rebuilding a Reference artifact.
+- Use the public `AppStylrTokens.Spacing` namespace in the Swift quickstart.
+- Resolve mirror sharing images beneath the canonical Reference route, independently of the mirror's hosting path.
+
+GitHub tags and Swift Package Manager use the same source release. The hosted Reference is versioned separately by its deployment and the host's immutable dependency. See [the v1.3.0 migration](./docs/migrations/v1.3.0.md) and [release process](./docs/releases.md) for channel verification.
 
 ## [1.2.0] - 2026-09-19
 

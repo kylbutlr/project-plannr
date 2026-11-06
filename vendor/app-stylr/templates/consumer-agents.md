@@ -1,6 +1,6 @@
 ## App Stylr
 
-This application follows [App Stylr v1.2.0](https://github.com/kylbutlr/app-stylr/tree/v1.2.0).
+This application follows the [App Stylr v1.4.1](https://github.com/kylbutlr/app-stylr/tree/v1.4.1).
 
 ### Required compatibility contract
 
@@ -10,6 +10,10 @@ This application follows [App Stylr v1.2.0](https://github.com/kylbutlr/app-styl
 4. Keep semantic meanings equivalent when the application exposes both light and dark themes.
 5. Preserve documented contrast, non-color communication, and reduced-motion requirements.
 6. Record intentional differences in `docs/app-stylr-exceptions.md`.
+
+### Theme default
+
+App Stylr apps are dark mode first. Start in dark mode by default; a light mode toggle is optional and belongs to the consuming app. Preserve the same semantic roles in both themes.
 
 ### Recommended review
 

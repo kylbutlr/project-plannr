@@ -78,7 +78,36 @@ function renderCssTheme(theme) {
   return renderCssProperties(theme, "ui");
 }
 
+export function resolveTheme(tokens, { theme = "dark", accent = "mint", tone = "normal" } = {}) {
+  return {
+    ...tokens.themes[theme],
+    ...tokens.accents?.[accent]?.[theme],
+    ...tokens.surfaceTones?.[tone]?.[theme]
+  };
+}
+
 export function renderCss(tokens) {
+  const accentStyles = Object.entries({ mint: tokens.themes, ...tokens.accents })
+    .map(([name, themes]) => `[data-app-stylr-accent="${name}"] {
+${renderCssTheme(themes.dark)}
+}
+
+[data-app-stylr-accent="${name}"][data-app-stylr-theme="light"] {
+${renderCssTheme(themes.light)}
+}`)
+    .join("\n\n");
+  const neutralRoles = Object.keys(tokens.surfaceTones.lighter.dark);
+  const normal = Object.fromEntries(["dark", "light"].map(mode => [mode,
+    Object.fromEntries(neutralRoles.map(role => [role, tokens.themes[mode][role]]))
+  ]));
+  const toneStyles = Object.entries({ normal, ...tokens.surfaceTones })
+    .map(([name, themes]) => `[data-app-stylr-tone="${name}"] {
+${renderCssTheme(themes.dark)}
+}
+
+[data-app-stylr-tone="${name}"][data-app-stylr-theme="light"] {
+${renderCssTheme(themes.light)}
+}`).join("\n\n");
   const typeProperties = Object.entries(tokens.typography.styles)
     .flatMap(([styleName, style]) => [
       `  --type-${kebabCase(styleName)}-size: ${style.size}px;`,
@@ -117,7 +146,10 @@ ${renderCssProperties(tokens.profiles.game, "profile-game", (value, name) => `${
   --icon-inset: ${tokens.icon.inset}px;
   --icon-radius: ${tokens.icon.radius}px;
   --icon-safe-area: ${tokens.icon.safeAreaPercent}%;
+  --icon-background: ${tokens.icon.background};
+  --icon-foreground: ${tokens.icon.foreground};
   --icon-gradient: linear-gradient(${tokens.icon.gradient.angle}deg, ${gradientStops});
+  --icon-monochrome-gradient: linear-gradient(${tokens.icon.monochromeGradient.angle}deg, ${tokens.icon.monochromeGradient.stops.map(stop => `${stop.color} ${stop.offset}%`).join(", ")});
 }
 
 :root,
@@ -130,6 +162,12 @@ ${renderCssTheme(tokens.themes.dark)}
 ${renderCssTheme(tokens.themes.light)}
   color-scheme: light;
 }
+
+/* Set theme and accent on the same product root. Mint is the default. */
+${accentStyles}
+
+/* Surface tone is independent of accent. Set all appearance attributes on the same root. */
+${toneStyles}
 `;
 }
 
@@ -149,6 +187,25 @@ function renderSwiftThemeArguments(theme, indent = "      ") {
 }
 
 export function renderSwift(tokens) {
+  const accentCases = { mint: "sage", blue: "slate" };
+  const accentCase = id => accentCases[id] || id;
+  const appearanceCases = Object.keys(tokens.accentPresets).flatMap(id => ["dark", "light"].map(mode =>
+    `    case (.${mode}, .${accentCase(id)}): base = ${id === "mint" ? mode : `Accents.${pascalCase(id)}.${mode}`}`
+  )).join("\n");
+  const toneCases = Object.entries(tokens.surfaceTones).flatMap(([tone, modes]) => Object.entries(modes).map(([mode, colors]) =>
+    `    case (.${tone}, .${mode}):\n      return Theme(\n${Object.keys(tokens.themes.dark).map((role, index, roles) =>
+      `        ${role}: ${colors[role] ? swiftColor(colors[role]) : `base.${role}`}${index === roles.length - 1 ? "" : ","}`
+    ).join("\n")}\n      )`
+  )).join("\n");
+  const accentThemes = Object.entries(tokens.accents ?? {}).map(([name, themes]) => `    public enum ${pascalCase(name)} {
+      public static let dark = Theme(
+${renderSwiftThemeArguments({ ...tokens.themes.dark, ...themes.dark }, "        ")}
+      )
+
+      public static let light = Theme(
+${renderSwiftThemeArguments({ ...tokens.themes.light, ...themes.light }, "        ")}
+      )
+    }`).join("\n\n");
   const themeFields = Object.keys(tokens.themes.dark)
     .map((name) => `    public let ${name}: Color`)
     .join("\n");
@@ -191,11 +248,38 @@ ${renderSwiftThemeArguments(tokens.themes.dark)}
 ${renderSwiftThemeArguments(tokens.themes.light)}
   )
 
+  public enum Appearance: String, Sendable { case dark, light }
+
+  public enum Accent: String, Sendable {
+${Object.keys(tokens.accentPresets).map(id => `    case ${accentCase(id)}${accentCase(id) !== id ? ` = "${id}"` : ""}`).join("\n")}
+  }
+
+  public enum SurfaceTone: String, Sendable { case lighter, normal, darker }
+
+  public static func theme(appearance: Appearance = .dark, accent: Accent = .sage, tone: SurfaceTone = .normal) -> Theme {
+    let base: Theme
+    switch (appearance, accent) {
+${appearanceCases}
+    }
+    switch (tone, appearance) {
+${toneCases}
+    default: return base
+    }
+  }
+
   public struct TypeStyle: Sendable {
     public let size: CGFloat
     public let lineHeight: CGFloat
     public let weight: Int
     public let letterSpacing: CGFloat
+  }
+
+  public enum Accents {
+    public static let names: [String: String] = [
+${Object.entries(tokens.accentPresets).map(([id, preset]) => `      ${JSON.stringify(id)}: ${JSON.stringify(preset.name)}`).join(",\n")}
+    ]
+
+${accentThemes}
   }
 
   public enum Typography {
@@ -233,12 +317,18 @@ ${Object.entries(tokens.profiles.game).map(([name, value]) => `    public static
   }
 
   public enum Icon {
+    public static let background = ${swiftColor(tokens.icon.background)}
+    public static let foreground = ${swiftColor(tokens.icon.foreground)}
     public static let canvas: CGFloat = ${tokens.icon.canvas}
     public static let square: CGFloat = ${tokens.icon.square}
     public static let inset: CGFloat = ${tokens.icon.inset}
     public static let radius: CGFloat = ${tokens.icon.radius}
     public static let safeAreaPercent: CGFloat = ${tokens.icon.safeAreaPercent}
     public static let gradientAngleDegrees: Double = ${tokens.icon.gradient.angle}
+    public static let monochromeGradientAngleDegrees: Double = ${tokens.icon.monochromeGradient.angle}
+    public static let monochromeGradientStops: [Gradient.Stop] = [
+${tokens.icon.monochromeGradient.stops.map(stop => `      .init(color: ${swiftColor(stop.color)}, location: ${stop.offset / 100})`).join(",\n")}
+    ]
   }
 }
 `;

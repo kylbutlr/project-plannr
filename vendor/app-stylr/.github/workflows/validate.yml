@@ -1,0 +1,32 @@
+name: Validate App Stylr
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  tokens-and-reference:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          package-manager-cache: false
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate tokens, adapters, and reference artifacts
+        run: npm test
+
+      - name: Verify the packed public package in a clean consumer
+        run: npm run package:check

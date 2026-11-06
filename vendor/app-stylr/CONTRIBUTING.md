@@ -21,7 +21,7 @@ npm run package:check
 swift build
 ```
 
-When the visual contract changes, inspect both local reference pages at desktop and phone widths. Update the changelog and add migration guidance for any public interface change.
+When the visual contract changes, inspect the local Reference page at desktop and phone widths. Update the changelog and add migration guidance for any public interface change.
 
 ## Pull requests
 

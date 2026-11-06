@@ -1,7 +1,7 @@
 {
   "name": "app-stylr",
-  "version": "1.2.0",
-  "description": "An opinionated, adaptable design foundation for small web, browser-extension, and macOS products.",
+  "version": "1.4.1",
+  "description": "Shared design tokens, typography, and icons for web, browser-extension, and macOS products.",
   "license": "MIT",
   "author": "Kyle Butler",
   "homepage": "https://kylbutlr.com/app-stylr",
@@ -38,12 +38,14 @@
     "reference",
     "templates",
     "tokens/app-stylr.json",
+    "tokens/app-stylr.schema.json",
     "CHANGELOG.md",
     "CONTRIBUTING.md",
     "LICENSE",
     "README.md",
     "SECURITY.md",
-    "SUPPORT.md"
+    "SUPPORT.md",
+    "styles"
   ],
   "exports": {
     "./package.json": "./package.json",
@@ -52,7 +54,8 @@
     "./tokens": "./tokens/app-stylr.json",
     "./assets/*": "./assets/*",
     "./templates/*": "./templates/*",
-    "./chrome-theme/*": "./chrome-theme/*"
+    "./chrome-theme/*": "./chrome-theme/*",
+    "./controls.css": "./styles/controls.css"
   },
   "bin": {
     "app-stylr-chrome-theme": "./scripts/build-chrome-theme.mjs",
@@ -73,7 +76,8 @@
     "package:check": "node scripts/verify-package.mjs",
     "validate": "node scripts/validate-tokens.mjs",
     "validate:repo": "node scripts/validate-repository.mjs",
-    "check": "npm run validate && npm run build:check && npm run icons:check && npm run chrome-theme:check && npm run site && npm run validate:repo && npm run privacy:check",
+    "test:cli": "node --test --test-concurrency=1 tests/*.test.mjs",
+    "check": "npm run validate && npm run build:check && npm run icons:check && npm run chrome-theme:check && npm run site && npm run validate:repo && npm run privacy:check && npm run test:cli",
     "test": "npm run check",
     "reference": "python3 -m http.server 4187 --directory .site"
   },
