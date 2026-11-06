@@ -1,0 +1,28 @@
+name: Validate Swift adapter
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "Package.swift"
+      - "adapters/swift/**"
+      - ".github/workflows/validate-swift.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  swift-adapter:
+    runs-on: macos-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Build Swift package
+        run: swift build

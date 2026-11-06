@@ -18,7 +18,7 @@ activity in the same workspace.
 
 <img src="docs/images/app-preview.webp" width="640" alt="Project Plannr showing fictional Fieldnotes and Atlas projects in a Kanban board with ticket priorities and status controls">
 
-App preview with demo data. [App overview](https://kylbutlr.com/apps/project-plannr).
+[Watch the interface preview](docs/images/app-preview.gif). Fictional demonstration data. [App overview](https://kylbutlr.com/apps/project-plannr).
 
 ## Availability
 
@@ -147,9 +147,8 @@ packaging writes the source/runtime archive, manifest, and checksums under
 
 ## Design foundation
 
-The interface uses the vendored [App Stylr v1.2.0](https://github.com/kylbutlr/app-stylr/tree/b3ca31ea264d5dd233fd871ac167247f1c306985)
-foundation, bundled Geist typography, and the optional native-control recipe
-from the pending v1.3.0 refresh. See the [Visual Reference](https://kylbutlr.com/app-stylr)
+The interface uses the vendored [App Stylr v1.4.1](https://github.com/kylbutlr/app-stylr/tree/v1.4.1)
+foundation, bundled Geist typography, and its shared control recipe. See the [Visual Reference](https://kylbutlr.com/app-stylr)
 and [implementation notes](docs/app-stylr-exceptions.md). App Stylr provides the
 shared visual values; Project Plannr owns its layout and planning behavior.
 

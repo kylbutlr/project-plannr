@@ -7,18 +7,18 @@ App Stylr commands run locally and do not upload inputs, outputs, or usage data.
 Three commands write to disk. Choose a dedicated output folder and commit or back up anything you need first:
 
 - `app-stylr-icons` and `app-stylr-chrome-theme` may replace generated files at their expected output paths;
-- `app-stylr-reference` removes and recreates the complete output directory;
-- adding `--check` verifies existing generated output without changing it.
+- `app-stylr-reference` rebuilds an empty directory or a recognized Reference output directory, rejecting source paths and unrelated files;
+- `--check` on the icon and Chrome-theme commands verifies existing generated output without changing it.
 
 `app-stylr-macos-release-check` is read-only. It validates the files you name but does not sign, upload, publish, or modify them.
 
 ## `app-stylr-icons`
 
 ```sh
-app-stylr-icons --source <square-image> --output <directory> [--check]
+app-stylr-icons --source <square-image> [--source-16 <square-image>] --output <directory> [--check]
 ```
 
-The source may be any square image format supported by the installed image processor. SVG and PNG are the simplest choices. The command writes deterministic Chrome extension, favicon, Apple touch, and PWA PNGs below the output directory. Existing files at those generated paths may be replaced. `--check` compares expected bytes without writing and fails when any file is missing or stale.
+The source may be any square image format supported by the installed image processor. `--source-16` optionally supplies a compact drawing for only the 16px output; larger exports use the main source. Both sources are validated before writing. SVG and PNG are the simplest choices. The command writes deterministic Chrome extension, favicon, Apple touch, and PWA PNGs below the output directory. Existing files at those generated paths may be replaced. `--check` compares expected bytes without writing and fails when any file is missing or stale.
 
 ## `app-stylr-chrome-theme`
 
@@ -51,9 +51,9 @@ app-stylr-reference \
   [--base-path /app-stylr]
 ```
 
-The command builds a self-contained copy of the App Stylr Reference from the installed package. It copies only the public adapters and assets required by the page, writes a machine-readable `app-stylr-reference.json` manifest, and rewrites URLs for the requested host path. When `--base-path` is omitted, the canonical URL pathname is used.
+The command builds a self-contained copy of the App Stylr Reference from the installed package. It copies only the public adapters and assets required by the page, writes a machine-readable `app-stylr-reference.json` manifest, includes the workbench module and canonical `tokens/`, and rewrites URLs for the requested host path. When `--base-path` is omitted, the canonical URL pathname is used.
 
-Repository maintainers may omit all options to reproduce the canonical artifact in `.site/`. The output must be a dedicated child directory because the command removes and recreates that entire directory on each run.
+Repository maintainers may omit all options to reproduce the canonical artifact in `.site/`. The output must be a dedicated child directory. New and empty directories are accepted. A repeat build accepts only a recognized Reference manifest and the generated file paths included in the installed package. Source directories, Git metadata, installed dependencies, symbolic links within existing output, and unrelated files are rejected before anything is removed. If an older build contains paths the current package no longer generates, preserve it separately and choose an empty output directory.
 
 ## Messages and exit status
 

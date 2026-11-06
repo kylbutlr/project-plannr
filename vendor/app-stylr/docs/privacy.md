@@ -6,7 +6,7 @@ App Stylr is a static reference and a package of local design assets and command
 
 | Surface | What it handles | Where it stays | What leaves your device |
 | --- | --- | --- | --- |
-| Public Reference | A request for the page and its static assets | The page itself stores nothing in your browser | The web host receives the connection data needed to serve the page |
+| Public Reference | A request for the page and its static assets | Specimen values stay in tab memory; display selections appear in the URL and browser history | The web host receives the connection data needed to serve the page |
 | CSS, fonts, tokens, assets, and templates | Files installed in your project | Your project and package-manager cache | Nothing sent by App Stylr |
 | Icon and Chrome-theme commands | The local input and output paths you choose | The chosen local folders | Nothing sent by App Stylr |
 | Reference generator | The local output folder you choose | The chosen local folder | Nothing sent by App Stylr |
@@ -14,7 +14,7 @@ App Stylr is a static reference and a package of local design assets and command
 
 ## Public Reference
 
-The Reference at [kylbutlr.com/app-stylr](https://kylbutlr.com/app-stylr) is static HTML and CSS. Its source contains no forms, account code, analytics scripts, cookies, browser storage, or application-data collection.
+The Reference at [kylbutlr.com/app-stylr](https://kylbutlr.com/app-stylr) is a static HTML/CSS/JavaScript workbench. It loads its canonical token JSON from the same host. Interactive specimen forms prevent submission and keep entered values in memory for that tab. Theme, accent, surface tone, density, and section appear in the URL and may remain in browser history; workspace input values do not enter the URL. Copy buttons write to the clipboard only when clicked. There are no accounts, analytics scripts, cookies, browser storage, uploads, or application-data collection.
 
 The page is delivered through Netlify. Like other web hosts, Netlify may process standard connection information such as an IP address, browser details, requested pages, and timestamps to operate and secure its service. See [Netlify's privacy statement](https://www.netlify.com/privacy/) for its current practices and privacy-request options.
 
@@ -24,7 +24,7 @@ Following a link to GitHub, npm, or another provider takes you to that provider.
 
 The published package contains local files and executable Node scripts. The four installed commands do not include network requests or telemetry:
 
-- `app-stylr-icons` reads one local image and writes generated icons beneath the output folder you choose. Existing files at the expected icon paths may be replaced.
+- `app-stylr-icons` reads a local master and an optional 16px source, then writes generated icons beneath the output folder you choose. Existing files at the expected icon paths may be replaced.
 - `app-stylr-chrome-theme` writes generated theme files beneath the output folder you choose. Existing files at those paths may be replaced.
 - `app-stylr-reference` replaces the dedicated output directory you choose, then writes the static Reference, its required assets, and its manifest.
 - `app-stylr-macos-release-check` reads the local release files you name and validates them. It does not modify, upload, sign, or publish them.
@@ -35,7 +35,7 @@ Installing App Stylr requires a request to GitHub or npm through your chosen pac
 
 ## Deleting data
 
-The Reference does not save data in your browser, so there is nothing in the page to delete.
+The Reference does not write browser storage. Reload or close the tab to clear specimen values. Display preferences are reflected in the URL; remove its query string or clear the corresponding browser-history entry if desired.
 
 To remove App Stylr from a Node project, uninstall the dependency with your package manager and remove any generated outputs you chose to keep. To remove generated icons, a Chrome theme, or a generated Reference, delete the corresponding local output folder. App Stylr does not retain another copy.
 

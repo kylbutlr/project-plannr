@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.0
+
+- Pin the shared visual foundation to App Stylr v1.4.1, with charcoal surfaces, Sage accents and precise controls.
+- Replace green icon backgrounds with the neutral Graphite treatment and retain scalable masters plus high-resolution exports.
+- Refresh the public still and animated previews from the actual interface using fictional data.
+
 ## 1.1.0
 
 - Refresh workspace layout, form controls, spacing, and mobile presentation.

@@ -33,3 +33,7 @@ Use the exact vendored source revision in app-stylr.json. Keep semantic roles,
 Geist, focus states, responsive controls, and dark default. Adapters stay
 unmodified. Preserve the incumbent layout unless Kyle requests a redesign.
 Record exceptions in docs/app-stylr-exceptions.md. Creator handle is kylbutlr.
+
+## Visual foundation maintenance
+
+Keep Sage/dark/Normal defaults, precise 4px controls, 8px cards and 12px dialogs, and quiet semantic feedback. Preserve product layouts and existing glyphs. Keep a scalable SVG master and inspect 16/32px legibility plus 128/512px Retina quality. Use the neutral Graphite base independently of accent palettes. Shared adapters are generated or vendored from the exact public v1.4.1 source, never edited independently.

@@ -12,7 +12,7 @@ npx app-stylr-icons --source assets/app-icon.svg --output icons
 
 Keep the generated `icons/chrome/` directory intact, then merge [`chrome-extension-icons.json`](../templates/chrome-extension-icons.json) into `manifest.json`. Chrome uses the 16px and 32px files for toolbar density, 48px on the extension management page, and 128px during installation and in the Chrome Web Store. Chrome does not support SVG files in manifest icon declarations.
 
-Inspect the 16px export before shipping. A product symbol that is unclear at that size should be simplified in the master artwork. Keep the App Stylr gradient and silhouette consistent with the larger app icon.
+Inspect the 16px export before shipping. A product symbol that is unclear at that size should be simplified in the master artwork. Keep the flat charcoal treatment and identifying silhouette consistent with the larger app icon. A dedicated `--source-16` drawing can reduce detail without replacing the product symbol.
 
 See the complete [platform icon export guide](./platform-icons.md) and Chrome's official [extension icon configuration](https://developer.chrome.com/docs/extensions/develop/ui/configure-icons).
 

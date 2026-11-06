@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/kylbutlr/app-stylr/blob/v1.2.0/templates/app-stylr.schema.json",
+  "$id": "https://github.com/kylbutlr/app-stylr/blob/v1.4.1/templates/app-stylr.schema.json",
   "title": "App Stylr consumer pin",
   "type": "object",
   "additionalProperties": false,

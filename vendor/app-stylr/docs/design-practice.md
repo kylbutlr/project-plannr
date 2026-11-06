@@ -7,6 +7,7 @@ App Stylr creates recognizable product character without prescribing a page layo
 App Stylr owns the parts that benefit from a stable contract:
 
 - semantic color roles and equivalent theme meanings;
+- dark mode as the default appearance, with optional light mode;
 - accessible contrast and non-color communication;
 - generated CSS and Swift adapters;
 - coordinated type, spacing, radius, size, and motion scales;
@@ -22,7 +23,7 @@ Each product decides its own:
 - information architecture and navigation;
 - layout, breakpoints, density, and responsive transformations;
 - components and interaction patterns;
-- initial theme and whether users can change it;
+- whether to offer a light mode toggle and how it fits the interface;
 - typography choices beyond the bundled starting point;
 - imagery, illustration, product icons, and expressive motion;
 - platform-specific behavior and native controls.

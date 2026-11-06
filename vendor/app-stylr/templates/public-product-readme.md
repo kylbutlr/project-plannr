@@ -58,7 +58,7 @@ State where generated artifacts go and whether the command publishes anything.
 
 ## App Stylr
 
-This product follows [App Stylr v1.2.0](https://github.com/kylbutlr/app-stylr/tree/v1.2.0). Use the [Visual Reference](https://kylbutlr.com/app-stylr) to understand shared tokens and states, then document only semantic compatibility differences in `docs/app-stylr-exceptions.md`.
+Name and link the immutable App Stylr version or revision this product actually uses. Use the [Visual Reference](https://kylbutlr.com/app-stylr) to understand shared tokens and states, then link the product's compatibility notes when applicable.
 
 ## Support
 

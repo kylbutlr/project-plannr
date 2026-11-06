@@ -23,7 +23,7 @@ npm run site
 find .site -maxdepth 2 -type f | sort
 ```
 
-Only `.site/index.html`, `.site/styles.css`, `.site/app-stylr-reference.json`, `.site/adapters/`, and `.site/assets/` are published. Package documentation, maintenance files, and repository-only tooling remain outside the artifact.
+Only `.site/index.html`, `.site/styles.css`, `.site/workbench.js`, `.site/app-stylr-reference.json`, `.site/adapters/`, `.site/styles/`, `.site/assets/`, and `.site/tokens/` are published. Package documentation, maintenance files, and repository-only tooling remain outside the artifact.
 
 The packaged `app-stylr-reference` command can generate the same versioned artifact below another host. Its output directory, canonical URL, and base path are explicit, so the Reference source remains in this repository while the generated page can be published at a route such as `/app-stylr`.
 
