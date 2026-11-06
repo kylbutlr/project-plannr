@@ -1,0 +1,39 @@
+{
+  "capturedAt": "2026-11-06T08:22:13.090Z",
+  "sourceVersion": "1.2.0",
+  "sourceRevision": "ed88a3b69ad5f0a366fedf19326d66f0660e820a",
+  "appStylrVersion": "1.4.1",
+  "fictionalData": true,
+  "capture": {
+    "width": 1280,
+    "height": 900,
+    "method": "Viewport-only PNG frames of the actual owning-repository interface in one isolated headless Chromium tab."
+  },
+  "animation": {
+    "width": 960,
+    "height": 675,
+    "frames": 4,
+    "durationMs": 6400
+  },
+  "source": "Real Kanban, project-swimlane and ranked-queue views, using the in-memory Fieldnotes and Atlas demonstration tickets. The viewport is scrolled to show the board.",
+  "edits": "Resized screenshots and encoded GIF/WebP with presentation pauses. No retouching, text replacement or invented controls.",
+  "coverageLimits": "These visual captures do not establish installed-extension acceptance, signed native binary delivery, live integrations, real monitoring or production data verification.",
+  "rawFrameSHA256": [
+    "cacbab0c1fd323d34866521c490978f480ad75446cf5026075cba1ef710f0a03",
+    "d286183db7b9378a72b9d1139eb29ca1b846ce3bd9c55f17c37e95fe74eb1386",
+    "639b206253082b52a1901f23837f05d1750bd05bf0575600bc213d98a687393f",
+    "a20186ce862d889686b4cd86aeb36be008b54d3c2b648d63cd735936f2326917"
+  ],
+  "files": [
+    {
+      "file": "app-preview.webp",
+      "bytes": 26190,
+      "sha256": "a410f7c26c640a9a7064db7d625f73d8c7195b15fc1b899143e9d8f05a71d7e6"
+    },
+    {
+      "file": "app-preview.gif",
+      "bytes": 233475,
+      "sha256": "4238d599387f12a085729ef16ccdf06b1c59f89fa2994bf54d83c9e40f8a98fb"
+    }
+  ]
+}
