@@ -23,7 +23,7 @@ into claims about actual project state.
 - Preserve optimistic concurrency and transactional audit for persistent writes.
 - Keep account creation, remote repositories, pushes, deployments, migrations,
   credential grants, and real ledger imports behind explicit user authorization.
-- Git author and committer must both be Kyle Butler <kyle@sdg.la> before a commit.
+- Git author and committer must both be Kyle Butler <kylbutlr@gmail.com> before a commit.
 - Run npm run check and scoped browser verification after relevant changes.
 - Report what passed, what remains demo-only, and what was not tested.
 

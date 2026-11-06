@@ -133,10 +133,10 @@ test('request limit stays 12KB normally, import body has an explicit bounded all
 async function repoFixture() {
   const directory = await realpath(await mkdtemp(join(tmpdir(), 'plannr-onboarding-'))), repo = join(directory, 'app');
   await mkdir(repo);
-  const git = async args => (await exec('git', ['-C', repo, ...args], {env: {...process.env, GIT_AUTHOR_NAME: 'Kyle Butler', GIT_AUTHOR_EMAIL: 'kyle@sdg.la', GIT_COMMITTER_NAME: 'Kyle Butler', GIT_COMMITTER_EMAIL: 'kyle@sdg.la'}})).stdout.trim();
+  const git = async args => (await exec('git', ['-C', repo, ...args], {env: {...process.env, GIT_AUTHOR_NAME: 'Kyle Butler', GIT_AUTHOR_EMAIL: 'kylbutlr@gmail.com', GIT_COMMITTER_NAME: 'Kyle Butler', GIT_COMMITTER_EMAIL: 'kylbutlr@gmail.com'}})).stdout.trim();
   await git(['init', '--quiet']); await writeFile(join(repo, '.gitignore'), '.plannr/\n'); await writeFile(join(repo, 'roadmap.md'), 'Fixture source ledger\n');
   await git(['add', '.gitignore', 'roadmap.md']);
-  for (const variable of ['GIT_AUTHOR_IDENT', 'GIT_COMMITTER_IDENT']) assert.match(await git(['var', variable]), /^Kyle Butler <kyle@sdg.la> /);
+  for (const variable of ['GIT_AUTHOR_IDENT', 'GIT_COMMITTER_IDENT']) assert.match(await git(['var', variable]), /^Kyle Butler <kylbutlr@gmail.com> /);
   await git(['commit', '-qm', 'Disposable fixture']);
   const manifest = fixture(); manifest.source.revision = await git(['rev-parse', 'HEAD']); manifest.source.files = ['roadmap.md'];
   const path = join(directory, 'manifest.json'); await writeFile(path, JSON.stringify(manifest));
