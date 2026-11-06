@@ -151,13 +151,17 @@ test('local file persists across restart, rejects concurrent owners and rolls ba
   assert.equal((await store.read()).projects[0].name, 'Persistent'); assert.equal((await store.read()).counter, 0);
   await store.close();
 });
+test('password length accepts 12 and 256 characters and rejects 11 and 257', () => {
+  for (const length of [12, 256]) assert.equal(configuration({PLANNR_PASSWORD: 'x'.repeat(length)}).authConfigured, true);
+  for (const length of [11, 257]) assert.throws(() => configuration({PLANNR_PASSWORD: 'x'.repeat(length)}), /between 12 and 256/);
+});
 test('configuration prevents demo database use, production targeting and insecure hosting', () => {
   assert.throws(() => configuration({PLANNR_MODE: 'demo', DATABASE_URL: 'postgresql://example/db'}), /Demo mode/);
   assert.throws(() => configuration({DATABASE_URL: 'postgresql://example/db', PLANNR_DATABASE_BRANCH: 'production'}), /Production access/);
   assert.throws(() => configuration({DATABASE_URL: 'postgresql://wrong/db', PLANNR_DATABASE_BRANCH: 'development', PLANNR_DATABASE_HOST: 'expected'}), /development database host/);
   assert.throws(() => configuration({PLANNR_ORIGIN: 'http://public.example'}), /HTTPS/);
   assert.throws(() => configuration({PLANNR_ORIGIN: 'https://public.example'}), /fully configured/);
-  assert.throws(() => configuration({PLANNR_PASSWORD: 'short'}), /between 16 and 256/);
+  assert.throws(() => configuration({PLANNR_PASSWORD: 'short'}), /between 12 and 256/);
 });
 test('credential issuance is single-use on retry, including its secret', async t => {
   const h = await harness(t), p = await project(h), headers = {...h.owner, 'Idempotency-Key': 'issue-once'}, body = {name: 'Once', projects: [p.id]};

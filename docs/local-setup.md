@@ -14,7 +14,7 @@ chmod 600 .env
 ```
 
 Open [.env](../.env) locally. Set `PLANNR_PASSWORD` to a unique password-manager
-password of 16 to 256 characters. Do not paste it in chat or commit it. Keep
+password of 12 to 256 characters. Do not paste it in chat or commit it. Keep
 `PLANNR_ORIGIN=http://127.0.0.1:4205` for the default local port.
 
 ```sh

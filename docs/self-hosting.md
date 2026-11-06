@@ -16,7 +16,7 @@ or a Netlify runtime in this mode. Origin and CSRF checks remain in place.
 ## Optional local password
 
 Copy `.env.example` to `.env` only if the destination does not exist. Select
-`PLANNR_AUTH_MODE=password` and set `PLANNR_PASSWORD` to a unique 16–256 character
+`PLANNR_AUTH_MODE=password` and set `PLANNR_PASSWORD` to a unique 12–256 character
 password. Keep the file owner-readable and run `npm start`. The browser retains
 only a revocable session cookie, not your password. Remove the password setting
 before explicitly switching to passwordless access.

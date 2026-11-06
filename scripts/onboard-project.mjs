@@ -85,7 +85,7 @@ export async function onboardingRun(options, {password = process.env.PLANNR_PASS
     const localOwner = session.authMode === 'none' && session.user && session.csrf
       && ['127.0.0.1', 'localhost'].includes(new URL(options.origin).hostname);
     if (!localOwner) {
-      if (typeof password !== 'string' || password.length < 16 || password.length > 256) throw Error('Set PLANNR_PASSWORD privately in the terminal, not a command argument.');
+      if (typeof password !== 'string' || password.length < 12 || password.length > 256) throw Error('Set PLANNR_PASSWORD privately in the terminal, not a command argument.');
       const login = await request('/auth/login', 'POST', {password});
       cookie = login.headers.get('set-cookie')?.split(';')[0];
       if (!cookie) throw Error('Owner sign-in did not return a session.');

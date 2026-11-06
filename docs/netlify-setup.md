@@ -77,7 +77,7 @@ forwarded header.
 | --- | --- |
 | `PLANNR_MODE` | `private` |
 | `PLANNR_ORIGIN` | Exact chosen HTTPS origin |
-| `PLANNR_PASSWORD` | Your unique 16 to 256 character workspace password |
+| `PLANNR_PASSWORD` | Your unique 12 to 256 character workspace password |
 | `DATABASE_URL` | Development branch's pooled connection string for the first isolated preview |
 | `PLANNR_DATABASE_BRANCH` | `development` |
 | `PLANNR_DATABASE_HOST` | Exact hostname from that development connection |

@@ -159,7 +159,8 @@ test('offline preview verifies committed files and makes zero network requests',
   await assert.rejects(onboardingSource(options), /committed snapshot/);
 });
 
-test('actual CLI imports via owner password, verifies receipts, grants scoped access, and generic roadmap reads it', async t => {
+test('actual CLI imports via a 12-character owner password, verifies receipts, grants scoped access, and generic roadmap reads it', async t => {
+  const password = 'x'.repeat(12);
   const fixture = await repoFixture(), state = emptyState(), store = memoryStore(state), config = configuration({PLANNR_PASSWORD: password});
   const server = createServer(application(store, config)); server.listen(0, '127.0.0.1'); await once(server, 'listening');
   config.origin = `http://127.0.0.1:${server.address().port}`;

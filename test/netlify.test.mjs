@@ -5,6 +5,21 @@ import {memoryStore} from '../lib/store.mjs';
 import defaultHandler, {netlifyApplication, config as routing} from '../netlify/functions/workspace.mjs';
 
 const password = 'test-only-hosted-password';
+test('Netlify accepts a 12-character password through startup and owner sign-in', async () => {
+  const password = 'x'.repeat(12);
+  const config = configuration({PLANNR_ORIGIN: 'https://plannr.example', PLANNR_PASSWORD: password,
+    PLANNR_DATABASE_BRANCH: 'development', PLANNR_DATABASE_HOST: 'development.example', DATABASE_URL: 'postgresql://development.example/test'});
+  const store = memoryStore(), app = netlifyApplication(config, store), context = {ip: '192.0.2.1'};
+  try {
+    const signedOut = await app(request('/api/session'), context);
+    assert.equal(signedOut.status, 200);
+    assert.equal((await signedOut.json()).user, null);
+    const login = await app(request('/auth/login', {method: 'POST', body: {password}, headers: {Origin: 'https://plannr.example'}}), context);
+    assert.equal(login.status, 200);
+    const cookie = login.headers.get('set-cookie').split(';')[0];
+    assert.equal((await app(request('/api/state', {headers: {cookie}}), context)).status, 200);
+  } finally {await store.close();}
+});
 function settings() {
   return configuration({PLANNR_ORIGIN: 'https://plannr.example', PLANNR_PASSWORD: password,
     PLANNR_DATABASE_BRANCH: 'development', PLANNR_DATABASE_HOST: 'development.example', DATABASE_URL: 'postgresql://development.example/test'});
