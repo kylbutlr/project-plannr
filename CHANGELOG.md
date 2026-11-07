@@ -1,6 +1,8 @@
 # Changelog
 
-## Unreleased
+## 1.3.0
+
+- Patch development image tooling while retaining the exact App Stylr visual-source pin.
 
 - Add named, ordered workflow columns with Waiting, Ready, Active, and Done categories.
 - Add Simple workflow and disabled-column inspection without deleting tickets or enabling agent pickup.
