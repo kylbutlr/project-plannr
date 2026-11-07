@@ -66,7 +66,14 @@ function refreshProjects(){
   control.replaceChildren(...(id==='project'?[new Option('All projects','all')]:[]),...activeProjects().map(p=>new Option(p.name,p.id)));
   if([...control.options].some(o=>o.value===value))control.value=value;
  }
- $('new-project').disabled=$('add-ticket').disabled=!activeProjects().length;
+ const hasProjects=activeProjects().length>0;
+ $('new-project').disabled=$('add-ticket').disabled=!hasProjects;
+ $('project-onboarding').hidden=hasProjects;
+ $('board-tools').hidden=!hasProjects;
+ document.querySelector('.project-filter').hidden=!hasProjects;
+ $('onboarding-heading').textContent=state.projects.length?'No active projects':'Create your first project';
+ $('onboarding-copy').textContent=state.projects.length?'Create a project or restore an archived project to see its tickets again.':'Start with a project, then add the work you want to track.';
+ $('create-first-project').textContent=state.projects.length?'Create or restore a project':'Create a project';
  $('project-list').innerHTML=state.projects.map(p=>`<form data-project-edit="${escape(p.id)}"><label class="grow">Name for ${escape(p.name)}<input name="name" value="${escape(p.name)}" required maxlength="80"></label><label>Type for ${escape(p.name)}<select name="kind">${Object.entries(kinds).map(([key,name])=>`<option value="${key}" ${key===p.kind?'selected':''}>${name}</option>`).join('')}</select></label><small>${p.archived?'Archived':'Active'} · ${p.ticketCount??0} tickets</small><button>Save</button><button type="button" data-project-archive="${escape(p.id)}">${p.archived?'Restore':'Archive'}</button></form>`).join('')||'<p>No projects yet. Add your first one above.</p>';
 }
 const boardParams=()=>new URLSearchParams({project:$('project').value||'all',q:completedSearch,searchScope:'all',view:viewKeys[variant],...(variant==='C'?{}:{paging:'lanes',sort:boardSort})});
@@ -84,7 +91,7 @@ async function load(force=false){
   const next=await response.json();if(!force&&JSON.stringify(next)===JSON.stringify(state))return;
   if(version!==epoch||!readGate.accept(token))return;
   changeGate.invalidate();state=next;$('board-updates').hidden=true;laneErrors.clear();refreshProjects();render(false);
-  if($('message').textContent.startsWith('Loading'))$('message').textContent='Drag a ticket between columns, or use its Status control.';
+  if($('message').textContent.startsWith('Loading'))$('message').textContent='';
  }catch(error){if(version===epoch&&readGate.accept(token))$('message').textContent=error.message;}
  finally{if(readGate.accept(token)){loading=false;$('load-completed').disabled=pageGate.has('all')||updates.pending;}}
 }
@@ -97,7 +104,7 @@ function lock(message){
  for(const control of document.querySelectorAll('#private-board input,#private-board textarea'))control.value='';
  $('project').replaceChildren(new Option('All projects','all'));$('new-project').replaceChildren();
  $('session-heading').textContent='Private workspace';$('session-message').textContent=message;
- $('workspace-password').value='';$('remember-me').checked=false;$('project-manager').hidden=true;$('manage-projects').setAttribute('aria-expanded','false');
+ $('workspace-password').value='';$('remember-me').checked=false;$('project-manager').hidden=true;for(const id of ['manage-projects','create-first-project','toggle-create','toggle-search'])$(id).setAttribute('aria-expanded','false');$('ticket-entry').hidden=$('search-panel').hidden=true;
  $('sign-in').hidden=!authReady;$('session-retry').hidden=false;
 }
 let authReady=false;
@@ -127,7 +134,7 @@ function render(preserve=true){
  const activeIds=new Set(activeProjects().map(p=>p.id));
  const items=state.tickets.filter(t=>activeIds.has(t.project)&&($('project').value==='all'||t.project===$('project').value)).sort(compareActive);
  const matchingView=variant==='C'?Boolean(state.completed):state.laneView===viewKeys[variant]&&state.laneSort===boardSort;
- $('board').innerHTML=!matchingView&&loading?'<p role="status">Loading this view...</p>':activeIds.size?(variant==='C'&&completedSearch&&!items.length?'<p>No matching tickets. Try another search or Clear.</p>':({A:lanes,B:swimlanes,C:queue}[variant])(items)):'<p>No active projects. Open Manage projects to add one or restore an archived project.</p>';
+ $('board').innerHTML=!matchingView&&loading?'<p role="status">Loading this view...</p>':activeIds.size?(variant==='C'&&completedSearch&&!items.length?'<p>No matching tickets. Try another search or Clear.</p>':({A:lanes,B:swimlanes,C:queue}[variant])(items)):'';
  document.querySelectorAll('[data-view]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.view===variant)));
  const latest=state.activity[0];$('latest-activity').textContent=latest?`Latest update: ${latest.actor} ${latest.action}: ${latest.ticket}`:'No activity yet.';
  $('activity').innerHTML=state.activity.map(a=>`<li>${escape(a.actor)} ${escape(a.action)}: ${escape(a.ticket)}</li>`).join('')||'<li>No changes yet.</li>';
@@ -198,10 +205,25 @@ function switchView(key){
 }
 document.querySelectorAll('[data-view]').forEach(button=>button.onclick=()=>switchView(button.dataset.view));
 $('project').onchange=()=>{closeDetail();invalidateReads();loading=false;void load(true);};
-$('manage-projects').onclick=()=>{const panel=$('project-manager');panel.hidden=!panel.hidden;$('manage-projects').setAttribute('aria-expanded',String(!panel.hidden));if(!panel.hidden)$('project-name').focus();};
+function showProjectManager(show){
+ $('project-manager').hidden=!show;
+ for(const id of ['manage-projects','create-first-project'])$(id).setAttribute('aria-expanded',String(show));
+ if(show)$('project-name').focus();
+}
+$('manage-projects').onclick=()=>showProjectManager($('project-manager').hidden);
+$('create-first-project').onclick=()=>showProjectManager(true);
+function showTicketEntry(show){
+ $('ticket-entry').hidden=!show;$('toggle-create').setAttribute('aria-expanded',String(show));
+ if(show)$('title').focus();else $('toggle-create').focus();
+}
+$('toggle-create').onclick=()=>showTicketEntry($('ticket-entry').hidden);
+$('toggle-search').onclick=()=>{
+ const show=$('search-panel').hidden;$('search-panel').hidden=!show;
+ $('toggle-search').setAttribute('aria-expanded',String(show));if(show)$('completed-search').focus();
+};
 $('add-project').onsubmit=async e=>{
  e.preventDefault();const button=e.submitter;button.disabled=true;
- try{const p=await request('/api/projects','POST',{name:$('project-name').value,kind:$('project-kind').value});$('project-name').value='';$('message').textContent=`Added ${p.name}.`;await load(true);}
+ try{const first=!activeProjects().length;const p=await request('/api/projects','POST',{name:$('project-name').value,kind:$('project-kind').value});$('project-name').value='';$('message').textContent=`Added ${p.name}.`;await load(true);if(first){showProjectManager(false);showTicketEntry(true);}}
  catch(error){$('message').textContent=error.message;}finally{button.disabled=false;}
 };
 $('project-list').addEventListener('submit',async e=>{
@@ -288,7 +310,7 @@ async function loadLane(key,retry=false){
 $('load-completed').onclick=()=>void loadMore();
 $('create').onsubmit=async e=>{
  e.preventDefault();const button=e.submitter;button.disabled=true;
- try{const result=await request('/api/tickets','POST',{project:$('new-project').value,title:$('title').value,priorityLevel:$('new-priority').value});$('title').value='';$('message').textContent=`Created ${result.id}.`;await load(true);}
+ try{const result=await request('/api/tickets','POST',{project:$('new-project').value,title:$('title').value,priorityLevel:$('new-priority').value});$('title').value='';$('message').textContent=`Created ${result.id}.`;await load(true);showTicketEntry(false);}
  catch(error){$('message').textContent=error.message;}finally{button.disabled=!activeProjects().length;}
 };
 $('session-retry').onclick=()=>void checkSession();$('refresh-board').onclick=()=>void load(true);

@@ -68,12 +68,12 @@ authentication. See [installation and password modes](docs/self-hosting.md).
 
 ### Your first project
 
-1. Open **Manage projects**, add a name, and choose App, Game, or Other.
-2. Add a ticket with a clear title and priority.
+1. Select **Create a project** in the empty workspace, add a name, and choose App, Game, or Other. Use **Manage projects** later to rename, archive, or restore projects.
+2. Add your first ticket with a clear title and priority. Later, use **Add ticket** above the board to open ticket entry.
 3. Open it to write the scope, add checklist items, or record a note.
 4. Move work between Next, In progress, and Completed. Completing a checklist
    does not silently change the ticket's status.
-5. Try Kanban or Ranked queue when you need a different view of the same work.
+5. Try Kanban or Ranked queue when you need a different view of the same work. **Search & sort** opens the search and ordering controls without leaving the board.
 
 Archived projects can be restored from Manage projects. Optional demo mode uses
 illustrative records and resets on restart; it never imports real repository

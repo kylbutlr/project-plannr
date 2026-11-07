@@ -126,3 +126,25 @@ button.primary { color: var(--ui-accent-text); }
  .session-panel { padding: 24px; margin-top: 24px; }
  #project-manager { padding: 20px; }
 }
+
+/* Keep first use actionable and populated work ahead of secondary controls. */
+.workspace-settings:not([open]) { display: none; }
+.board-toolbar { gap: var(--space-16); flex-wrap: wrap; }
+.board-actions { display: flex; flex-wrap: wrap; gap: var(--space-8); }
+#project-onboarding { padding-block: var(--space-24); max-width: 65ch; }
+#project-onboarding h2 { margin-bottom: var(--space-8); }
+#project-onboarding button { margin-top: var(--space-16); }
+#message:empty, #workspace:has(#board:empty) { display: none; }
+#search-panel { padding-bottom: var(--space-8); }
+@media(max-width:700px) {
+ .app-header { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: var(--space-12); }
+ .app-header-actions { display: contents; }
+ .header-controls { grid-column: 1 / -1; }
+ main { padding-top: var(--space-24); }
+ .workspace-intro { gap: var(--space-16); margin-bottom: var(--space-16); }
+ .board-toolbar { padding-bottom: var(--space-16); }
+ #workspace { margin-top: var(--space-24); }
+ .board-actions { width: 100%; }
+ .board-actions button { flex: 1; }
+ .workspace-activity { margin-top: var(--space-24); }
+}
