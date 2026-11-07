@@ -2,7 +2,7 @@
   "capturedAt": "2026-11-07T06:32:10.721406Z",
   "sourceVersion": "unreleased workflow update",
   "baseVersion": "1.2.0",
-  "sourceRevision": "2387938d14e8d7f9530a6d890e7603d82258fd10",
+  "sourceRevision": "38236cb231f9045d0d17751611c29caa089fc30c",
   "sourceTag": null,
   "appStylrVersion": "1.4.1",
   "fictionalData": true,
@@ -63,5 +63,8 @@
       "bytes": 191084,
       "sha256": "5de18bc48e539d02d6b2a99a4417eea3c12f87b62ab3ed4b66e825e19bfec6d9"
     }
-  ]
+  ],
+  "capturedSourceRevision": "2387938d14e8d7f9530a6d890e7603d82258fd10",
+  "sourceTree": "3825fe0736ed04c9b289b614d5a933c6c60c4f5b",
+  "sourceHistoryNote": "The captured commit was carried onto recreated origin/main history without source changes. Both commits have this exact source tree."
 }
