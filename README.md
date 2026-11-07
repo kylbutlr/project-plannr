@@ -16,9 +16,9 @@ activity in the same workspace.
 
 ## Preview
 
-<img src="docs/images/app-preview.webp" width="640" alt="Project Plannr showing fictional Fieldnotes and Atlas projects in a Kanban board with ticket priorities and status controls">
+<img src="docs/images/app-preview.gif" width="640" alt="Project Plannr moving fictional work through Triage, Next, In progress, and Completed before switching to Simple workflow">
 
-[Watch the interface preview](docs/images/app-preview.gif). Fictional demonstration data. [App overview](https://kylbutlr.com/apps/project-plannr).
+Fictional demonstration data. [Still image](docs/images/app-preview.webp) · [App overview](https://kylbutlr.com/apps/project-plannr) · [Capture provenance](docs/images/app-preview.provenance.json).
 
 ## Availability
 
