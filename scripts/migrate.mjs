@@ -12,6 +12,7 @@ try {
   await client.connect(); await client.query('BEGIN');
   await client.query('SELECT pg_advisory_xact_lock(178507521, 1)');
   await client.query(await readFile(new URL('../migrations/001-workspace.sql', import.meta.url), 'utf8'));
+  await client.query(await readFile(new URL('../migrations/002-workflow.sql', import.meta.url), 'utf8'));
   await client.query('COMMIT');
   const result = await client.query('SELECT version FROM project_plannr.migrations ORDER BY version');
   console.log(`PASS: development database migration verified. Schema versions: ${result.rows.map(row => row.version).join(', ')}. Production was not targeted.`);

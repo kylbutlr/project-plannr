@@ -59,7 +59,7 @@ export function appendLanePage(state, page, key) {
 
 export function createTicketUpdates({getTicket, readTicket, writeTicket, applyTicket, invalidate}) {
   const queues = new Map();
-  const unchanged = (base, fresh, patch) => ['status', 'ownerId', 'leaseUntil', ...Object.keys(patch).filter(key => key !== 'comment')]
+  const unchanged = (base, fresh, patch) => ['status', 'columnId', 'ownerId', 'leaseUntil', ...Object.keys(patch).filter(key => key !== 'comment')]
     .every(key => key === 'checklistChanges' ? JSON.stringify(checklistItems(base)) === JSON.stringify(checklistItems(fresh)) : base[key] === fresh[key]);
   return {
     get pending() {return queues.size > 0;},

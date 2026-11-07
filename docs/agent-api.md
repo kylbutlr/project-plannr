@@ -169,3 +169,25 @@ checklist changes retries once only if the checklist, status, ownership and any
 other edited fields remain unchanged. A competing checklist edit leaves that
 local draft intact with an explicit reload/discard choice. These API extensions
 require publication before hosted use.
+
+## Configurable workflow columns
+
+Board and state snapshots include `workflow: {revision, columns}`. Tickets use a
+stable `columnId`; legacy tickets without it inherit their status column. See
+[workflow columns](workflow-columns.md) for configuration and migration details.
+`GET /api/workflow` and revision-checked `PATCH /api/workflow` are owner-only.
+
+Agent backlogs include tickets in enabled Ready columns only. Waiting, disabled,
+and Done tickets cannot be claimed. An Active ticket can be claimed only after
+its previous claim has expired or been released. `POST /api/tickets/:id/claim`
+accepts optional `columnId` naming the intended enabled Active step; omission
+uses the current Active step or first enabled Active column. Release returns to
+the original Ready step when enabled, otherwise the default Ready step. Create
+and edit requests accept `columnId`; do not also supply `status`. Agents create
+new tickets only in Waiting or Ready columns, and still need a claim to edit.
+
+Canonical `status` remains `next`, `in-progress`, or `completed` for the three
+existing categories, plus `waiting`. This preserves old state/history clients;
+column IDs express custom steps without treating their names as automation.
+
+`GET /api/tickets/:id?include=workflow` returns `{ticket, workflow}` from the same authorized storage snapshot for explicit editor conflict recovery. The ordinary endpoint retains its existing ticket response.

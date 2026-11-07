@@ -11,7 +11,7 @@ private hosted access. Projects and credentials remain private to each installat
 - One owner-managed private workspace first; no public signup.
 - Project swimlanes by default, plus Kanban and Ranked queue.
 - Projects can be added, renamed, classified, archived, and restored.
-- Next, In progress, and Completed remain the simple workflow.
+- Next, In progress, and Completed remain the default Simple workflow. The owner can add, rename, reorder, remove, or disable workspace-wide columns, categorized as Waiting, Ready, Active, or Done. New columns start in Waiting. Disabled columns preserve their tickets and are excluded from agent pickup; Show disabled columns exposes them without re-enabling automation. Keep one enabled Ready, Active, and Done column. Populated removals require explicit destinations and active claims must be released before semantic column changes.
 - Clicking a ticket opens a focused editor for title, description, status,
   priority, and notes. Agent reservations stay out of the everyday owner UI.
 - Priority is P0 (Critical), P1 (High), P2 (Normal), or P3 (Low), color-coded without

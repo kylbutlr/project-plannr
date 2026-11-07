@@ -61,7 +61,7 @@ button.primary { color: var(--ui-accent-text); }
 .views [aria-pressed="true"] { background: var(--ui-selected); color: var(--ui-selected-text); border-color: transparent; }
 .create-ticket { margin-top: 28px; padding: 24px; background: var(--ui-surface); border: 1px solid var(--ui-border); border-radius: var(--radius-card); }
 .create-ticket h2 { font-size: 16px; margin: 0 0 20px; }
-#create { display: grid; grid-template-columns: minmax(150px,.8fr) minmax(200px,2fr) minmax(150px,.65fr) auto; gap: 16px; margin: 0; }
+#create { display: grid; grid-template-columns: minmax(130px,.8fr) minmax(180px,2fr) minmax(130px,.8fr) minmax(130px,.65fr) auto; gap: 16px; margin: 0; }
 #create button { min-height: 48px; }
 #completed-filter { max-width: none; display: grid; grid-template-columns: minmax(220px,1fr) minmax(140px,220px) auto auto; gap: 16px; margin: 28px 0 12px; }
 #message { margin: 16px 0 0; font-size: 13px; }
@@ -147,4 +147,25 @@ button.primary { color: var(--ui-accent-text); }
  .board-actions { width: 100%; }
  .board-actions button { flex: 1; }
  .workspace-activity { margin-top: var(--space-24); }
+}
+
+#workflow-manager { margin-block: var(--space-24); padding: var(--space-24); border: 1px solid var(--ui-border); border-radius: var(--radius-card); background: var(--ui-surface); }
+#workflow-manager > p { max-width: 75ch; font-size: var(--type-small-size); }
+.workflow-heading { display:flex; align-items:center; justify-content:space-between; gap:var(--space-16); }
+.workflow-heading h2 { margin:0; }
+#workflow-form { display:block; }
+.workflow-column { display:grid; grid-template-columns:minmax(180px,1fr) minmax(140px,200px) auto auto; align-items:end; gap:var(--space-16); padding-block:var(--space-16); border-bottom:1px solid var(--ui-border); }
+.workflow-column small { grid-column:1/-1; color:var(--ui-text-muted); font-size:var(--type-small-size); }
+.column-actions,.workflow-actions { display:flex; gap:var(--space-8); flex-wrap:wrap; }
+.workflow-actions { margin-top:var(--space-24); }
+#column-removals { display:grid; gap:var(--space-16); margin-top:var(--space-16); }
+.inline-choice { display:flex; align-items:center; gap:var(--space-8); min-height:44px; }
+.inline-choice input { width:20px; height:20px; min-height:20px; padding:0; accent-color:var(--ui-accent); }
+#disabled-columns-control { margin-top:var(--space-16); flex-wrap:wrap; }
+#disabled-columns-help { font-size:var(--type-small-size); }
+.lanes.many-columns { grid-template-columns:none; grid-auto-flow:column; grid-auto-columns:minmax(280px,1fr); overflow-x:auto; padding-bottom:var(--space-12); }
+@media(max-width:700px) {
+ #workflow-manager { padding:20px; }
+ .workflow-column { grid-template-columns:minmax(0,1fr); }
+ .lanes.many-columns { grid-auto-flow:row; grid-template-columns:minmax(0,1fr); grid-auto-columns:auto; overflow:visible; }
 }

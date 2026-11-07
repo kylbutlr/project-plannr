@@ -45,3 +45,12 @@ One owner per installation. No hosted account is provided. There is no automatic
 update service. Review the source and configuration before adding a reverse
 proxy or connecting agents. The GitHub release includes source, browser assets,
 server code, and setup instructions; npm installs the pinned runtime dependencies.
+
+## Upgrading to configurable workflow columns
+
+File workspaces load the default three columns without rewriting existing tickets.
+Before deploying the workflow-column update to PostgreSQL hosting, take a backup
+and run the documented migration against the verified development target. The
+migration runner now applies `001-workspace.sql` and additive `002-workflow.sql`.
+Schema version 2 stores revisioned workflow metadata in the workspace row. Deploy
+only after it succeeds; do not point the migration at an unverified database.

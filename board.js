@@ -1,3 +1,5 @@
+import {workflowEditor} from './workflow-editor.js';
+import {workflowOf, ticketColumn, columnOf, stateColumn} from './workflow.js';
 // Three approved views share one authenticated workspace.
 import {appendCompletedPage, appendLanePage, laneKey, nearLaneEnd, projectFolds, createPageGate, createReadGate, createChangeGate, createTicketUpdates} from './board-client.js';
 import {priorityLevels, priorityLevel, compareActive, compareLane, boardSorts} from './ticket-priority.js';
@@ -5,7 +7,10 @@ import {checklistItems, checklistProgress, checklistDiff, checklistLimit, checkl
 import {readPreferences,savePreferences,normalizePreferences,preferenceDefaults} from './workspace-preferences.js';
 const $=id=>document.getElementById(id);
 const names={A:'Kanban',B:'Project swimlanes',C:'Ranked queue'},viewKeys={A:'kanban',B:'swimlanes',C:'queue'};
-const stages={'next':'Next','in-progress':'In progress','completed':'Completed'},kinds={game:'Game',app:'App',other:'Other'};
+const kinds={game:'Game',app:'App',other:'Other'};
+let showDisabled=false;
+const visibleColumns=()=>workflowOf(state).columns.filter(column=>column.enabled||showDisabled);
+const columnOptions=t=>workflowOf(state).columns.filter(column=>column.enabled||column.id===ticketColumn(t)).map(column=>`<option value="${escape(column.id)}" ${ticketColumn(t)===column.id?'selected':''}>${escape(column.name)}${column.enabled?'':' (off)'}</option>`).join('');
 let state={projects:[],tickets:[],activity:[]},selected,dragged,savedView,session,epoch=0,lastActivity=Date.now(),loading=false,draftBase,draftChecklist=[],completedSearch='',reloadWanted=false;
 const readGate=createReadGate(),pageGate=createPageGate();
 const changeGate=createChangeGate();
@@ -44,16 +49,16 @@ $('board-sort').value=boardSort;
 const escape=text=>String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const activeProjects=()=>state.projects.filter(p=>!p.archived);
 const projectName=id=>state.projects.find(p=>p.id===id)?.name||'Unknown project';
-const statusSelect=t=>`<label>Status for ${escape(t.id)}<select data-status="${escape(t.id)}">${Object.entries(stages).map(([key,name])=>`<option value="${key}" ${t.status===key?'selected':''}>${name}</option>`).join('')}</select></label>`;
+const statusSelect=t=>`<label>Status for ${escape(t.id)}<select data-status="${escape(t.id)}">${columnOptions(t)}</select></label>`;
 function ticket(t){const level=priorityLevel(t),progress=checklistProgress(t);return `<article class="ticket" draggable="true" data-ticket="${escape(t.id)}"><div class="meta"><small>${escape(projectName(t.project))}<br>${escape(t.id)}</small><span class="priority-badge priority-${level.toLowerCase()}" aria-label="Priority ${level}: ${priorityLevels[level]}" title="${priorityLevels[level]}">${level}</span></div><button class="open" data-open="${escape(t.id)}">${escape(t.title)}</button><div class="ticket-progress"><small>${escape(t.owner||'Unassigned')}</small>${progress.total?`<small class="checklist-count">Checklist: ${progress.completed}/${progress.total} complete</small><progress value="${progress.completed}" max="${progress.total}" aria-label="Checklist for ${escape(t.id)}">${progress.completed}/${progress.total}</progress>`:''}</div>${statusSelect(t)}</article>`;}
 const completedOrder=(a,b)=>(b.completedAt||'').localeCompare(a.completedAt||'')||b.id.localeCompare(a.id);
-function lanes(items,project){return `<div class="lanes">${Object.entries(stages).map(([key,name])=>{
- const id=laneKey(project||$('project').value||'all',key),rows=items.filter(t=>t.status===key).sort((a,b)=>compareLane(a,b,boardSort)),page=state.lanes?.[id],size=variant==='B'?5:10,error=laneErrors.get(id);
- const order=key==='completed'&&boardSort!=='priority'?'Newest completion first.':boardSort==='recent'?'Newest added first.':key==='completed'?'P0 first; newest within each priority.':'P0 first.';
- const busy=pageGate.has(id),footer=page?`<div class="lane-pagination" data-page-end="${escape(id)}"><p role="status">Showing ${rows.length} of ${page.total}${completedSearch?' matching':''}. ${order}${busy?' Loading more...':''}</p>${error?`<p role="alert">${escape(error)}</p>`:''}${page.nextCursor?`<button data-load-lane="${escape(id)}" aria-label="${error?'Retry loading':`Load ${size} more`} ${name.toLowerCase()} tickets${project?` for ${escape(projectName(project))}`:''}" ${busy||updates.pending?'disabled':''}>${busy?'Loading...':error?'Retry loading':`Load ${size} more`}</button>`:''}</div>`:'';
+function lanes(items,project){return `<div class="lanes ${visibleColumns().length>3?'many-columns':''}">${visibleColumns().map(({id:key,name,category,enabled})=>{
+ const id=laneKey(project||$('project').value||'all',key),rows=items.filter(t=>ticketColumn(t)===key).sort((a,b)=>compareLane(a,b,boardSort)),page=state.lanes?.[id],size=variant==='B'?5:10,error=laneErrors.get(id);
+ const order=category==='done'&&boardSort!=='priority'?'Newest completion first.':boardSort==='recent'?'Newest added first.':category==='done'?'P0 first; newest within each priority.':'P0 first.';
+ const busy=pageGate.has(id),footer=page?`<div class="lane-pagination" data-page-end="${escape(id)}"><p role="status">Showing ${rows.length} of ${page.total}${completedSearch?' matching':''}. ${order}${busy?' Loading more...':''}</p>${error?`<p role="alert">${escape(error)}</p>`:''}${page.nextCursor?`<button data-load-lane="${escape(id)}" aria-label="${error?'Retry loading':`Load ${size} more`} ${escape(name.toLowerCase())} tickets${project?` for ${escape(projectName(project))}`:''}" ${busy||updates.pending?'disabled':''}>${busy?'Loading...':error?'Retry loading':`Load ${size} more`}</button>`:''}</div>`:'';
  const cards=rows.map(ticket).join('')||`<p class="empty">${completedSearch?'No matching tickets.':'No tickets here.'}</p>`;
- const contents=`<div class="lane-history" data-scroll-lane="${escape(id)}" role="region" aria-label="${name} tickets for ${escape(project?projectName(project):$('project').value==='all'?'all projects':projectName($('project').value))}" tabindex="0" aria-busy="${busy}">${cards}${footer}</div>`;
- return `<section class="lane ${variant==='A'?'kanban-lane':'swimlane'}" data-drop="${key}"${project?` data-lane-project="${escape(project)}"`:''}><h2>${name}<span>${page?.total??rows.length}</span></h2>${contents}</section>`;
+ const contents=`<div class="lane-history" data-scroll-lane="${escape(id)}" role="region" aria-label="${escape(name)} tickets for ${escape(project?projectName(project):$('project').value==='all'?'all projects':projectName($('project').value))}" tabindex="0" aria-busy="${busy}">${cards}${footer}</div>`;
+ return `<section class="lane ${variant==='A'?'kanban-lane':'swimlane'}" ${enabled?`data-drop="${escape(key)}"`:''}${project?` data-lane-project="${escape(project)}"`:''}><h2>${escape(name)}${enabled?'':' (off)'}<span>${page?.total??rows.length}</span></h2>${contents}</section>`;
  }).join('')}</div>`;}
 function swimlanes(items){return activeProjects().filter(p=>$('project').value==='all'||p.id===$('project').value).map(p=>{
  const collapsed=folds.isCollapsed(p.id,Boolean(completedSearch)),contentId=`project-lanes-${p.id}`;
@@ -66,6 +71,7 @@ function refreshProjects(){
   control.replaceChildren(...(id==='project'?[new Option('All projects','all')]:[]),...activeProjects().map(p=>new Option(p.name,p.id)));
   if([...control.options].some(o=>o.value===value))control.value=value;
  }
+ const columnSelect=$('new-column'), current=columnSelect.value;columnSelect.replaceChildren(...workflowOf(state).columns.filter(column=>column.enabled).map(column=>new Option(column.name,column.id)));columnSelect.value=workflowOf(state).columns.some(column=>column.enabled&&column.id===current)?current:stateColumn(workflowOf(state),'next').id;
  const hasProjects=activeProjects().length>0;
  $('new-project').disabled=$('add-ticket').disabled=!hasProjects;
  $('project-onboarding').hidden=hasProjects;
@@ -97,7 +103,7 @@ async function load(force=false){
 }
 function lock(message){
  epoch++;invalidateReads();laneErrors.clear();laneObservers.forEach(observer=>observer.disconnect());laneObservers=[];reloadWanted=false;session=null;closeDetail();state={projects:[],tickets:[],activity:[]};loading=false;completedSearch='';
- $('private-board').hidden=$('header-controls').hidden=true;$('session-panel').hidden=false;
+ $('private-board').hidden=$('header-controls').hidden=true;$('workflow-manager').hidden=true;$('manage-columns').setAttribute('aria-expanded','false');$('session-panel').hidden=false;
  $('board-updates').hidden=true;
  for(const id of ['board','detail','project-list','snapshot','activity'])$(id).replaceChildren();
  for(const id of ['boundary','activity-boundary','latest-activity','message','completed-count'])$(id).textContent='';
@@ -125,6 +131,8 @@ async function checkSession(){
  }catch(error){if(version===epoch){lock(error.message);$('session-heading').textContent='Connection unavailable';}}
 }
 function render(preserve=true){
+ $('disabled-columns-control').hidden=!workflowOf(state).columns.some(column=>!column.enabled);
+ $('show-disabled-columns').checked=showDisabled;
  $('board-sort-control').hidden=$('sort-help').hidden=variant==='C';
  $('sort-help').textContent=boardSort==='default'?'Default: priority for active work; newest completion first for Completed.':boardSort==='priority'?'Priority: P0 first in every column; newest completion breaks Completed ties.':'Recent: newest added first for active work; newest completion first for Completed.';
  $('search-help').hidden=!completedSearch;
@@ -132,7 +140,7 @@ function render(preserve=true){
  const positions=new Map(preserve?[...document.querySelectorAll('[data-scroll-lane]')].map(lane=>[lane.dataset.scrollLane,lane.scrollTop]):[]);
  const focused=preserve&&document.activeElement?.closest('#board')?{fold:document.activeElement.dataset.fold,lane:document.activeElement.dataset.scrollLane,load:document.activeElement.dataset.loadLane,open:document.activeElement.dataset.open,status:document.activeElement.dataset.status}:null;
  const activeIds=new Set(activeProjects().map(p=>p.id));
- const items=state.tickets.filter(t=>activeIds.has(t.project)&&($('project').value==='all'||t.project===$('project').value)).sort(compareActive);
+ const items=state.tickets.filter(t=>(showDisabled||columnOf(workflowOf(state),t)?.enabled)&&activeIds.has(t.project)&&($('project').value==='all'||t.project===$('project').value)).sort(compareActive);
  const matchingView=variant==='C'?Boolean(state.completed):state.laneView===viewKeys[variant]&&state.laneSort===boardSort;
  $('board').innerHTML=!matchingView&&loading?'<p role="status">Loading this view...</p>':activeIds.size?(variant==='C'&&completedSearch&&!items.length?'<p>No matching tickets. Try another search or Clear.</p>':({A:lanes,B:swimlanes,C:queue}[variant])(items)):'';
  document.querySelectorAll('[data-view]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.view===variant)));
@@ -158,13 +166,13 @@ function renderNotes(t){if($('ticket-notes'))$('ticket-notes').innerHTML=t.comme
 function fillEditor(t){
  draftChecklist=structuredClone(checklistItems(t));
  draftBase=structuredClone(t);$('edit-title').value=t.title;$('edit-description').value=t.description;
- $('edit-status').value=t.status;$('edit-priority').value=priorityLevel(t);$('editor-message').textContent='';$('reload-ticket').hidden=true;renderNotes(t);renderChecklist();
+ $('edit-status').innerHTML=columnOptions(t);$('edit-status').value=ticketColumn(t);$('edit-priority').value=priorityLevel(t);$('editor-message').textContent='';$('reload-ticket').hidden=true;renderNotes(t);renderChecklist();
 }
 function openDetail(id){
  const t=state.tickets.find(t=>t.id===id);if(!t)return;selected=id;
  $('detail').innerHTML=`<header class="editor-header"><div><h2 id="editor-heading">Edit ticket</h2><p>${escape(projectName(t.project))} · ${escape(t.id)}</p></div><button type="button" id="close-detail">Close</button></header>
  <div class="editor-body"><form id="edit-ticket"><label>Title<input id="edit-title" required maxlength="120"></label><label>Description<textarea id="edit-description" maxlength="4000"></textarea></label>
- <div class="editor-fields"><label>Status<select id="edit-status">${Object.entries(stages).map(([key,name])=>`<option value="${key}">${name}</option>`).join('')}</select></label><label>Priority<select id="edit-priority">${Object.entries(priorityLevels).map(([key,name])=>`<option value="${key}">${key}: ${name}</option>`).join('')}</select></label></div>
+ <div class="editor-fields"><label>Status<select id="edit-status">${columnOptions(t)}</select></label><label>Priority<select id="edit-priority">${Object.entries(priorityLevels).map(([key,name])=>`<option value="${key}">${key}: ${name}</option>`).join('')}</select></label></div>
  <section class="editor-checklist" aria-labelledby="checklist-heading"><div class="checklist-heading"><h3 id="checklist-heading">Checklist</h3><span id="checklist-progress" role="status"></span></div><p id="checklist-help">Checklist changes are saved with Save changes. Ticket status stays separate.</p><ol id="ticket-checklist"></ol><div class="checklist-add"><label class="grow">New checklist item<input id="new-checklist-item" maxlength="${checklistTextLimit}" placeholder="What needs to be done?"></label><button type="button" id="add-checklist-item">Add item</button></div><p id="checklist-message" role="status" aria-live="polite"></p></section>
  <p id="editor-message" role="status" aria-live="polite"></p><button type="button" id="reload-ticket" hidden>Use latest ticket and discard my draft</button>
  <div class="editor-actions"><button type="button" id="cancel-edit">Cancel</button><button class="primary" id="save-ticket">Save changes</button></div></form>
@@ -194,7 +202,7 @@ async function request(path,method='GET',body){
 }
 async function update(id,patch,expected){
  const version=epoch;
- try{const result=await updates.update(id,patch,expected);if(version!==epoch)return null;$('message').textContent=`Updated ${id}.`;if(patch.status!==undefined)void load(true);return result;}
+ try{const result=await updates.update(id,patch,expected);if(version!==epoch)return null;$('message').textContent=`Updated ${id}.`;if(patch.status!==undefined||patch.columnId!==undefined)await load(true);return result;}
  catch(error){if(version===epoch){$('message').textContent=error.message;if(selected===id&&$('editor-message')){$('editor-message').textContent=error.message;$('reload-ticket').hidden=false;}}return null;}
  finally{if(version===epoch&&session?.user)render();}
 }
@@ -204,6 +212,7 @@ function switchView(key){
  closeDetail();invalidateReads();loading=false;void load(true);render();
 }
 document.querySelectorAll('[data-view]').forEach(button=>button.onclick=()=>switchView(button.dataset.view));
+$('show-disabled-columns').onchange=()=>{showDisabled=$('show-disabled-columns').checked;render(false);};
 $('project').onchange=()=>{closeDetail();invalidateReads();loading=false;void load(true);};
 function showProjectManager(show){
  $('project-manager').hidden=!show;
@@ -239,17 +248,17 @@ $('project-list').addEventListener('click',async e=>{
 });
 $('board').addEventListener('click',e=>{const fold=e.target.closest('[data-fold]');if(fold){folds.toggle(fold.dataset.fold);render();return;}const button=e.target.closest('[data-load-lane]');if(button){void loadLane(button.dataset.loadLane,true);return;}const row=e.target.closest('[data-ticket]');if(row&&!e.target.closest('label,select'))openDetail(row.dataset.ticket);});
 $('board').addEventListener('scroll',e=>{const lane=e.target;if(lane.dataset?.scrollLane&&nearLaneEnd(lane))void loadLane(lane.dataset.scrollLane);},{capture:true,passive:true});
-$('board').addEventListener('change',e=>{if(e.target.dataset.status)void update(e.target.dataset.status,{status:e.target.value});});
+$('board').addEventListener('change',e=>{if(e.target.dataset.status)void update(e.target.dataset.status,{columnId:e.target.value});});
 $('board').addEventListener('dragstart',e=>{dragged=e.target.closest('[data-ticket]')?.dataset.ticket;if(dragged)e.dataTransfer.setData('text/plain',dragged);});
 $('board').addEventListener('dragover',e=>{const lane=e.target.closest('[data-drop]');if(lane){e.preventDefault();lane.classList.add('over');}});
 $('board').addEventListener('dragleave',e=>e.target.closest('[data-drop]')?.classList.remove('over'));
-$('board').addEventListener('drop',e=>{const lane=e.target.closest('[data-drop]');if(lane&&dragged){e.preventDefault();lane.classList.remove('over');void update(dragged,{status:lane.dataset.drop});dragged=null;}});
+$('board').addEventListener('drop',e=>{const lane=e.target.closest('[data-drop]');if(lane&&dragged){e.preventDefault();lane.classList.remove('over');void update(dragged,{columnId:lane.dataset.drop});dragged=null;}});
 $('detail').addEventListener('click',async e=>{
  if(['close-detail','cancel-edit'].includes(e.target.id)){closeDetail();return;}
  if(e.target.id==='add-checklist-item')addChecklistItem();
  const remove=e.target.closest('[data-remove-checklist]');
  if(remove){const row=remove.closest('[data-checklist-id]'),index=draftChecklist.findIndex(item=>item.id===row.dataset.checklistId);draftChecklist.splice(index,1);renderChecklist();const next=$('ticket-checklist').querySelectorAll('[data-checklist-text]');(next[Math.min(index,next.length-1)]||$('new-checklist-item')).focus();}
- if(e.target.id==='reload-ticket'){try{const fresh=await request(`/api/tickets/${encodeURIComponent(selected)}`);if($('detail').open)fillEditor(fresh);}catch(error){if($('editor-message'))$('editor-message').textContent=error.message;}}
+ if(e.target.id==='reload-ticket'){const id=selected,version=epoch;try{const packet=await request(`/api/tickets/${encodeURIComponent(id)}?include=workflow`);if(version===epoch&&selected===id&&$('detail').open){state.workflow=packet.workflow;fillEditor(packet.ticket);invalidateReads();loading=false;await load(true);}}catch(error){if($('editor-message'))$('editor-message').textContent=error.message;}}
 });
 $('detail').addEventListener('input',e=>{
  const row=e.target.closest('[data-checklist-id]');if(!row)return;
@@ -265,8 +274,8 @@ $('detail').addEventListener('submit',async e=>{
  if(form.id==='note')patch={comment:$('note-text').value};
  else {
   if($('new-checklist-item').value.trim()&&!addChecklistItem())return;
-  const values={title:$('edit-title').value.trim(),description:$('edit-description').value,status:$('edit-status').value,priorityLevel:$('edit-priority').value};
-  patch=Object.fromEntries(Object.entries(values).filter(([key,value])=>(key==='priorityLevel'?priorityLevel(draftBase):draftBase[key])!==value));
+  const values={title:$('edit-title').value.trim(),description:$('edit-description').value,columnId:$('edit-status').value,priorityLevel:$('edit-priority').value};
+  patch=Object.fromEntries(Object.entries(values).filter(([key,value])=>(key==='priorityLevel'?priorityLevel(draftBase):key==='columnId'?ticketColumn(draftBase):draftBase[key])!==value));
   const changes=checklistDiff(draftBase,draftChecklist);if(changes.length)patch.checklistChanges=changes;
   if(!Object.keys(patch).length){closeDetail();return;}
  }
@@ -310,7 +319,7 @@ async function loadLane(key,retry=false){
 $('load-completed').onclick=()=>void loadMore();
 $('create').onsubmit=async e=>{
  e.preventDefault();const button=e.submitter;button.disabled=true;
- try{const result=await request('/api/tickets','POST',{project:$('new-project').value,title:$('title').value,priorityLevel:$('new-priority').value});$('title').value='';$('message').textContent=`Created ${result.id}.`;await load(true);showTicketEntry(false);}
+ try{const result=await request('/api/tickets','POST',{project:$('new-project').value,columnId:$('new-column').value,title:$('title').value,priorityLevel:$('new-priority').value});$('title').value='';$('message').textContent=`Created ${result.id}.`;await load(true);showTicketEntry(false);}
  catch(error){$('message').textContent=error.message;}finally{button.disabled=!activeProjects().length;}
 };
 $('session-retry').onclick=()=>void checkSession();$('refresh-board').onclick=()=>void load(true);
@@ -339,6 +348,7 @@ $('sign-in').onsubmit=async e=>{
 };
 $('sign-out').onclick=async()=>{const button=$('sign-out');button.disabled=true;try{await request('/auth/logout','POST',{});lock('You signed out. Sign in again to reopen your private board.');}catch(error){$('message').textContent=error.message;}finally{button.disabled=false;}};
 for(const event of ['pointerdown','keydown','wheel'])document.addEventListener(event,()=>{lastActivity=Date.now();},{passive:true});
+workflowEditor({request,saved:async()=>{invalidateReads();loading=false;await load(true);}});
 await checkSession();setInterval(()=>{if(session?.user&&!document.hidden&&Date.now()-lastActivity<180000)void checkChanges();},30000);
 document.addEventListener('visibilitychange',()=>{if(document.hidden)changeGate.invalidate();else{lastActivity=Date.now();void checkChanges();}});
 window.addEventListener('offline',()=>changeGate.invalidate());

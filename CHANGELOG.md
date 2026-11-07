@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- Add named, ordered workflow columns with Waiting, Ready, Active, and Done categories.
+- Add Simple workflow and disabled-column inspection without deleting tickets or enabling agent pickup.
+- Preserve scoped claims, revision conflicts, completion history, and explicit ticket destinations when removing columns.
+- Lead fresh workspaces with project creation and keep the board visible earlier on mobile.
+- Include README media and additive workflow schema migration in source downloads.
+
 ## 1.2.0
 
 - Pin the shared visual foundation to App Stylr v1.4.1, with charcoal surfaces, Sage accents and precise controls.
