@@ -1,6 +1,10 @@
 # Changelog
 
-## Unreleased
+## 1.3.0
+
+- Keep clean installs compatible with Node 22/npm 10 by packing the immutable local styling dependency instead of symlinking it.
+
+- Patch development image tooling while retaining the exact App Stylr visual-source pin.
 
 - Add named, ordered workflow columns with Waiting, Ready, Active, and Done categories.
 - Add Simple workflow and disabled-column inspection without deleting tickets or enabling agent pickup.

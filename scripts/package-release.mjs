@@ -5,9 +5,9 @@ import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 
 const root=process.cwd(), manifest=JSON.parse(await readFile('package.json','utf8'));
-if(manifest.name!=='project-plannr'||manifest.version!=='1.2.0')throw Error('Review the public release version before packaging.');
+if(manifest.name!=='project-plannr'||manifest.version!=='1.3.0')throw Error('Review the public release version before packaging.');
 const name=`project-plannr-${manifest.version}`, temp=await mkdtemp(join(tmpdir(),'plannr-release-')), stage=join(temp,name);
-const files=['README.md','LICENSE','SECURITY.md','CONTRIBUTING.md','CHANGELOG.md','.env.example','package.json','package-lock.json','server.mjs','agent.mjs','workflow.js','workflow-editor.js','workspace-preferences.js','board.js','board-client.js','board.css','prototype.html','ticket-priority.js','ticket-checklist.js','check.mjs','app-stylr.json',
+const files=['.npmrc','README.md','LICENSE','SECURITY.md','CONTRIBUTING.md','CHANGELOG.md','.env.example','package.json','package-lock.json','server.mjs','agent.mjs','workflow.js','workflow-editor.js','workspace-preferences.js','board.js','board-client.js','board.css','prototype.html','ticket-priority.js','ticket-checklist.js','check.mjs','app-stylr.json',
 'migrations','netlify/functions','netlify.toml','lib','assets','vendor/app-stylr','scripts','test','examples/project-import.json','docs/workflow-columns.md','docs/self-hosting.md','docs/agent-api.md','docs/project-onboarding.md','docs/ticket-writing.md','docs/app-stylr-exceptions.md','docs/images/app-preview.webp','docs/images/app-preview.gif','docs/images/app-preview.provenance.json'];
 async function safeCopy(source,target){const entry=await lstat(source);if(entry.isSymbolicLink())throw Error('Release input must not be a symlink: '+source);if(entry.isDirectory()){await mkdir(target,{recursive:true});for(const file of await readdir(source))await safeCopy(join(source,file),join(target,file));}else{await mkdir(resolve(target,'..'),{recursive:true});await cp(source,target);}}
 try{
