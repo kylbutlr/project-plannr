@@ -80,7 +80,7 @@ test('SQL board query bounds every partition to size plus lookahead, not an unbo
     const result=await sqlLaneBoard(client,selection);
     assert.equal(queries.length,2);assert.equal(result.tickets.length,30);
     assert.equal(queries[0].params[2],view==='swimlanes'?6:11);assert.match(queries[0].sql,/page_rank<=\$3/);
-    assert.match(queries[0].sql,view==='swimlanes'?/PARTITION BY project_id, data->>'status'/:/PARTITION BY data->>'status'/);
+    assert.match(queries[0].sql,view==='swimlanes'?/PARTITION BY project_id, coalesce\(data->>'columnId',data->>'status'\)/:/PARTITION BY coalesce\(data->>'columnId',data->>'status'\)/);
     assert.match(queries[0].sql,/COLLATE "C"/);
   }
 });
@@ -91,9 +91,9 @@ test('SQL continuation is project/status scoped, uses all typed cursor parameter
     selection.cursor={id:'boundary',time:'time',priority:2,priorityLevel:'P1',status,view:'swimlanes',sort:'default'};
     const queries=[],client={async query(sql,params){queries.push({sql,params});return {rows:sql.includes('count(*)')?[{total:23}]:[]};}};
     await sqlLanePage(client,selection);
-    assert.deepEqual(queries[0].params,[['a'],'',status,'time','boundary',2,6,status==='completed'?0:1]);assert.match(queries[0].sql,/LIMIT \$7/);
-    for(let i=1;i<=8;i++)assert.ok(queries[0].sql.includes(`$${i}`));
-    assert.match(queries[0].sql,/data->>'status'=\$3/);assert.match(queries[0].sql,/CASE WHEN \$3='completed'/);
+    assert.deepEqual(queries[0].params,[['a'],'',status,'time','boundary',2,6,status==='completed'?0:1,status==='completed']);assert.match(queries[0].sql,/LIMIT \$7/);
+    for(let i=1;i<=9;i++)assert.ok(queries[0].sql.includes(`$${i}`));
+    assert.match(queries[0].sql,/coalesce\(data->>'columnId',data->>'status'\)=\$3/);assert.match(queries[0].sql,/CASE WHEN \$9::boolean/);
   }
 });
 test('Recent SQL uses a typed constant, numeric creation order and a matching descending cursor boundary',async()=>{

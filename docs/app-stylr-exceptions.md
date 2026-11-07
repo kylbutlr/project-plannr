@@ -36,3 +36,13 @@ The product retains its charcoal/mint identity and uses a local candidate of the
 ## App Stylr v1.4.1 visual refresh
 
 The shared adapters and Geist assets come from immutable source 6fbc524f07ed7aa7db9c8593bf8116b9440937bc. Sage/dark/Normal and Comfortable remain the defaults, with existing product preferences preserved. Shared geometry uses 4px controls/buttons, 8px cards and 12px dialogs. Feedback stays on neutral surfaces with semantic text/icons. Existing foreground glyphs use the palette-independent Graphite base, with scalable SVG masters and directly rendered high-resolution exports. Keep the incumbent layout, keyboard behavior, auth, data, integrations and platform-specific controls intact.
+
+## Workflow column controls
+
+Column settings retain the v1.4.1 pinned adapter and semantic roles. The current
+App Stylr v1.4.3 form-control guidance was rechecked; the intervening patches do
+not change visual tokens. Product-owned layout uses 24px desktop panel padding
+and 20px on phones, visible labels, a separate category selector and Enabled
+checkbox, neutral dividers, and the Sage Save action. Phone controls were rendered
+at 16px text and approximately 48px height, with no horizontal document overflow.
+The shared adapter was not edited.

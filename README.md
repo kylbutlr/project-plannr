@@ -16,9 +16,9 @@ activity in the same workspace.
 
 ## Preview
 
-<img src="docs/images/app-preview.webp" width="640" alt="Project Plannr showing fictional Fieldnotes and Atlas projects in a Kanban board with ticket priorities and status controls">
+<img src="docs/images/app-preview.gif" width="640" alt="Project Plannr moving fictional work through Triage, Next, In progress, and Completed before switching to Simple workflow">
 
-[Watch the interface preview](docs/images/app-preview.gif). Fictional demonstration data. [App overview](https://kylbutlr.com/apps/project-plannr).
+Fictional demonstration data. [Still image](docs/images/app-preview.webp) · [App overview](https://kylbutlr.com/apps/project-plannr) · [Capture provenance](docs/images/app-preview.provenance.json).
 
 ## Availability
 
@@ -37,6 +37,7 @@ maintainer-hosted workspace is required.
 ## Highlights
 
 - Organize applications, games, and other projects in three complementary views.
+- Build a workflow with named columns for discussion, ready work, active work, and completion. Turn extra stages off with Simple workflow while keeping their tickets.
 - Create, edit, archive, and restore projects without discarding their tickets.
 - Track priorities, ticket checklists, notes, revisions, and completion history.
 - Search across loaded and unloaded tickets, with explicit board sorting.
@@ -68,12 +69,12 @@ authentication. See [installation and password modes](docs/self-hosting.md).
 
 ### Your first project
 
-1. Open **Manage projects**, add a name, and choose App, Game, or Other.
-2. Add a ticket with a clear title and priority.
+1. Select **Create a project** in the empty workspace, add a name, and choose App, Game, or Other. Use **Manage projects** later to rename, archive, or restore projects.
+2. Add your first ticket with a clear title and priority. Later, use **Add ticket** above the board to open ticket entry.
 3. Open it to write the scope, add checklist items, or record a note.
-4. Move work between Next, In progress, and Completed. Completing a checklist
+4. Move work between the default Next, In progress, and Completed columns. Use **Columns** to add stages such as Triage or Ready for review, choose their workflow categories, and reorder them. Completing a checklist
    does not silently change the ticket's status.
-5. Try Kanban or Ranked queue when you need a different view of the same work.
+5. Try Kanban or Ranked queue when you need a different view of the same work. **Search & sort** opens the search and ordering controls without leaving the board.
 
 Archived projects can be restored from Manage projects. Optional demo mode uses
 illustrative records and resets on restart; it never imports real repository
@@ -91,6 +92,12 @@ Project names and types are owner-managed workspace data. View preferences,
 project collapse state, and board sorting stay local to the browser. The
 interface uses visible labels, keyboard focus, and native control fallbacks
 rather than requiring one browser's custom dropdown behavior.
+
+### Columns and Simple workflow
+
+Columns are shared across projects. New columns start in **Waiting**, excluded from agent pickup. **Ready** columns make tickets eligible; **Active** tracks work underway; **Done** records completion. Categories determine behavior independently of column names. No category launches an agent or grants access.
+
+**Simple workflow** restores the three defaults and turns off extra columns without deleting their tickets. Use **Show disabled columns** to inspect that work or move it into an enabled stage. Removing a populated column requires an explicit destination, including for archived projects. Release active claims before disabling or changing their column. See [workflow columns](docs/workflow-columns.md) for configuration, agent behavior, and hosted upgrade steps.
 
 ## Working with agents
 
@@ -124,9 +131,9 @@ multi-tenant service. It does not provide hosting, automatic updates, or an
 agent execution platform. Agents work through scoped credentials and the same
 server-enforced revision rules as the owner.
 
-Fresh browser acceptance for the interface refresh remains pending. Automated
-checks cover application behavior and packaging; they do not replace rendered
-review or validate a user's hosting configuration.
+Automated checks cover application behavior and packaging; they do not replace
+rendered review or validate a user's hosting configuration. Hosted upgrades that
+add workflow columns require schema migration 002 before deployment.
 
 ## Development
 
