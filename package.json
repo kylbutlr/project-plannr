@@ -1,0 +1,37 @@
+{
+  "name": "project-plannr",
+  "version": "1.3.0",
+  "private": true,
+  "type": "module",
+  "description": "Self-hosted project planning for people and project-scoped agents.",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "dev": "node server.mjs",
+    "demo": "PLANNR_MODE=demo DATABASE_URL= node server.mjs",
+    "start": "node server.mjs",
+    "build": "node scripts/build.mjs",
+    "icons": "node scripts/icons.mjs",
+    "icons:check": "node scripts/icons.mjs --check",
+    "check": "node --check server.mjs && node --check board.js && node --check agent.mjs && node scripts/icons.mjs --check && node --test test/*.test.mjs && node check.mjs",
+    "db:migrate": "node scripts/migrate.mjs",
+    "db:check": "node scripts/database-check.mjs",
+    "agent": "node agent.mjs",
+    "onboard": "node scripts/onboard-project.mjs",
+    "roadmap": "node scripts/roadmap.mjs",
+    "start:local": "PLANNR_AUTH_MODE=none node server.mjs",
+    "package": "node scripts/package-release.mjs"
+  },
+  "dependencies": {
+    "pg": "8.23.1"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "0.5.15",
+    "app-stylr": "file:vendor/app-stylr"
+  },
+  "license": "MIT",
+  "overrides": {
+    "sharp": "0.35.5"
+  }
+}

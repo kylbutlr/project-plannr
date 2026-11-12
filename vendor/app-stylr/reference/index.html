@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en" data-app-stylr-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <meta
+      name="description"
+      content="Consistent color, typography, and icons across your products. Inspect shared CSS and Swift values, live controls, accent palettes, and flat icon exports."
+    />
+    <title>App Stylr Reference</title>
+    <link rel="canonical" href="https://kylbutlr.com/app-stylr" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="App Stylr Reference" />
+    <meta
+      property="og:description"
+      content="Shared design tokens, typography, and icons for web, browser-extension, and macOS products."
+    />
+    <meta property="og:url" content="https://kylbutlr.com/app-stylr" />
+    <meta property="og:image" content="__APP_STYLR_SOCIAL_IMAGE_URL__" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="App Stylr Reference" />
+    <meta
+      name="twitter:description"
+      content="Shared design tokens, typography, and icons for web, browser-extension, and macOS products."
+    />
+    <meta name="twitter:image" content="__APP_STYLR_SOCIAL_IMAGE_URL__" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"App Stylr Reference","description":"Shared design tokens, typography, and icons for web, browser-extension, and macOS products.","url":"https://kylbutlr.com/app-stylr","creator":{"@type":"Person","name":"Kyle Butler","url":"https://kylbutlr.com"}}</script>
+    <link rel="icon" href="../assets/favicon-32.png?v=graphite-blank-1" type="image/png" sizes="32x32" />
+    <link id="favicon" rel="icon" href="../assets/app-icon-monochrome-base.svg?v=graphite-blank-1" type="image/svg+xml" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script type="module" src="./workbench.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to specimens</a>
+    <header class="workbench-header">
+      <a class="brand" href="?section=overview"><img src="../assets/example-app-icon.svg" alt="" width="36" height="36"><span>App Stylr <small>Reference workbench</small></span></a>
+      <span class="version-tag" id="reference-version">v1.4.1</span>
+      <div class="global-controls">
+        <button type="button" class="toolbar-button" id="theme-toggle" aria-label="Switch to light theme"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg><span id="theme-label">Dark</span></button>
+        <label class="density-control appearance-control"><span>Density</span><select id="density-select"><option value="comfortable">Comfortable</option><option value="compact">Compact</option></select></label>
+        <label class="density-control appearance-control"><span>Accent palette</span><select id="accent-select"><option value="mint">Sage</option></select></label>
+        <label class="density-control appearance-control"><span>Surface tone</span><select id="tone-select"><option value="normal">Normal</option></select></label>
+        <a class="toolbar-link" id="json-download" href="../tokens/app-stylr.json" download>Export tokens <span aria-hidden="true">↓</span></a>
+      </div>
+    </header>
+    <div class="workbench-shell">
+      <aside class="workbench-index"><nav id="section-nav" aria-label="Reference sections">
+        <a href="?section=overview">Overview</a><a href="?section=colors">Colors</a><a href="?section=typography">Typography</a><a href="?section=controls">Controls</a><a href="?section=feedback">Feedback</a><a href="?section=icons">Icons</a><a href="?section=layout">Layout &amp; motion</a><a href="?section=setup">Setup</a>
+      </nav></aside>
+      <main id="main" tabindex="-1" data-app-stylr-controls>
+        <header class="section-header"><div class="section-path"><span>Foundation</span><span aria-hidden="true">/</span><span id="section-path-label">Overview</span></div>
+          <div class="title-row"><h1 id="section-title" tabindex="-1">System overview</h1><button id="inspect-toggle" class="toolbar-button" type="button">Inspect tokens <span aria-hidden="true">↗</span></button></div>
+          <p id="section-description">A practical place to inspect, exercise, and reproduce the shared visual system.</p>
+        </header>
+        <div id="section-content"><p>Loading the shared tokens…</p></div>
+        <noscript><p>Interactive specimens need JavaScript. <a href="../tokens/app-stylr.json">Download the tokens</a> or <a href="https://github.com/kylbutlr/app-stylr#quick-start">read the setup guide</a>.</p></noscript>
+        <footer class="section-footer"><span id="current-palette">Sage · dark</span><span><a href="https://github.com/kylbutlr/app-stylr">Source repository</a> · <a href="https://github.com/kylbutlr/app-stylr/blob/main/CHANGELOG.md">Release notes</a></span></footer>
+      </main>
+    </div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <dialog id="token-dialog" aria-labelledby="token-dialog-title"><div class="dialog-head"><h2 id="token-dialog-title">Token inspector</h2><button class="toolbar-button" type="button" id="close-token-dialog" aria-label="Close token inspector">×</button></div><div id="dialog-inspector"></div></dialog>
+  </body>
+</html>

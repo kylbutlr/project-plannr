@@ -1,0 +1,146 @@
+{
+  "manifest_version": 3,
+  "version": "1.0.1",
+  "name": "App Stylr Dark",
+  "short_name": "App Stylr",
+  "description": "A calm, dark Chrome theme built from the App Stylr charcoal-to-mint palette.",
+  "author": "App Stylr contributors",
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "theme": {
+    "images": {
+      "theme_ntp_background": "images/theme-ntp-background.png"
+    },
+    "colors": {
+      "background_tab": [
+        46,
+        49,
+        53
+      ],
+      "background_tab_inactive": [
+        18,
+        18,
+        20
+      ],
+      "background_tab_incognito": [
+        38,
+        61,
+        57
+      ],
+      "background_tab_incognito_inactive": [
+        18,
+        18,
+        20
+      ],
+      "bookmark_text": [
+        167,
+        167,
+        174
+      ],
+      "button_background": [
+        38,
+        61,
+        57
+      ],
+      "frame": [
+        32,
+        32,
+        35
+      ],
+      "frame_inactive": [
+        18,
+        18,
+        20
+      ],
+      "frame_incognito": [
+        38,
+        61,
+        57
+      ],
+      "frame_incognito_inactive": [
+        18,
+        18,
+        20
+      ],
+      "ntp_background": [
+        14,
+        14,
+        16
+      ],
+      "ntp_header": [
+        167,
+        167,
+        174
+      ],
+      "ntp_link": [
+        169,
+        206,
+        194
+      ],
+      "ntp_text": [
+        245,
+        244,
+        243
+      ],
+      "omnibox_background": [
+        32,
+        32,
+        35
+      ],
+      "omnibox_text": [
+        245,
+        244,
+        243
+      ],
+      "tab_background_text": [
+        167,
+        167,
+        174
+      ],
+      "tab_background_text_inactive": [
+        131,
+        164,
+        163
+      ],
+      "tab_background_text_incognito": [
+        167,
+        167,
+        174
+      ],
+      "tab_background_text_incognito_inactive": [
+        131,
+        164,
+        163
+      ],
+      "tab_text": [
+        245,
+        244,
+        243
+      ],
+      "toolbar": [
+        21,
+        21,
+        23
+      ],
+      "toolbar_button_icon": [
+        169,
+        206,
+        194
+      ],
+      "toolbar_text": [
+        245,
+        244,
+        243
+      ]
+    },
+    "properties": {
+      "ntp_background_alignment": "center",
+      "ntp_background_repeat": "no-repeat",
+      "ntp_logo_alternate": 1
+    }
+  }
+}
