@@ -1,0 +1,22 @@
+[build]
+  base = "reference"
+  command = "cd .. && npm ci && npm run site"
+  publish = "../.site"
+
+[[redirects]]
+  from = "/reference/style-guide.html"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/reference"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/reference/"
+  to = "/"
+  status = 301
+  force = true

@@ -1,0 +1,11 @@
+.DS_Store
+.build/
+.site/
+node_modules/
+reference/.screenshots/
+chrome-theme/Cached Theme.pak
+examples/web/dist/
+
+# Local design studies and review evidence
+/prototypes/
+/.impeccable/review/

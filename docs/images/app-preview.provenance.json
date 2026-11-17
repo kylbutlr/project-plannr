@@ -1,0 +1,70 @@
+{
+  "capturedAt": "2026-11-07T06:32:10.721406Z",
+  "sourceVersion": "unreleased workflow update",
+  "baseVersion": "1.2.0",
+  "sourceRevision": "38236cb231f9045d0d17751611c29caa089fc30c",
+  "sourceTag": null,
+  "appStylrVersion": "1.4.1",
+  "fictionalData": true,
+  "capture": {
+    "viewportWidth": 1280,
+    "viewportHeight": 900,
+    "method": "Actual interface in one task-owned in-app browser tab, using only fictional demo API records. Cursor-free browser viewport captures."
+  },
+  "animation": {
+    "width": 960,
+    "height": 675,
+    "frames": 5,
+    "durationMs": 7400
+  },
+  "source": "Seven fictional Fieldnotes/Atlas tickets with P0/P1/P2/P3 priorities. A ticket moves through Triage, Next, In progress and Completed, then Simple workflow turns the extra stage off.",
+  "edits": "Aspect-preserving downscale and palette/GIF encoding with presentation pauses. No retouching, text replacement, invented controls or upscaling.",
+  "coverageLimits": "This is a local unreleased workflow candidate. Captures do not establish hosted migration/deployment, a public release, real agent execution, or production-data acceptance.",
+  "rawFrames": [
+    {
+      "file": "00-triage.png",
+      "width": 1265,
+      "height": 889,
+      "sha256": "27448121f4e783ba87b8186989d476d69c34bebdb66c37b3f8189a84301d5bb1"
+    },
+    {
+      "file": "01-ready.png",
+      "width": 1265,
+      "height": 889,
+      "sha256": "e732efd42425679fdb3073fda20e9b588d541bda1c60f15ed8c95b1947603b61"
+    },
+    {
+      "file": "02-active.png",
+      "width": 1265,
+      "height": 889,
+      "sha256": "4c22168cbf768c062a847b9b399a11e0acc94563be96d32a64031856480f64a7"
+    },
+    {
+      "file": "03-done.png",
+      "width": 1265,
+      "height": 889,
+      "sha256": "b5418e8699a14b09a57c29f60409961a3e1f719e0c0227d1c649645c7a35f8f4"
+    },
+    {
+      "file": "04-simple.png",
+      "width": 1265,
+      "height": 889,
+      "sha256": "cf05b6ad1098dd9567fce6bdb670c5a0396bc6217a299c7c07b86a51af2e1061"
+    }
+  ],
+  "files": [
+    {
+      "file": "app-preview.webp",
+      "bytes": 28616,
+      "sha256": "369d3a36c01a4f725e1040fb3ae55b2197bf1638cb90590679bc2f640de72bc2"
+    },
+    {
+      "file": "app-preview.gif",
+      "bytes": 191084,
+      "sha256": "5de18bc48e539d02d6b2a99a4417eea3c12f87b62ab3ed4b66e825e19bfec6d9"
+    }
+  ],
+  "capturedSourceRevision": "2387938d14e8d7f9530a6d890e7603d82258fd10",
+  "sourceTree": "3825fe0736ed04c9b289b614d5a933c6c60c4f5b",
+  "sourceHistoryNote": "The captured commit was carried onto recreated origin/main history without source changes. Both commits have this exact source tree."
+}

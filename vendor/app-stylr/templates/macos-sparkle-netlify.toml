@@ -1,0 +1,11 @@
+[build]
+  base = "updates"
+  command = "true"
+  ignore = "exit 1"
+  publish = "."
+
+[[headers]]
+  for = "/appcast.xml"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+    Content-Type = "application/rss+xml; charset=utf-8"

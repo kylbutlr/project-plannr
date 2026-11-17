@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "project": {"name": "Example App", "kind": "app"},
+  "source": {"namespace": "initial-roadmap", "url": "https://example.com/planning-reference"},
+  "tickets": [
+    {
+      "sourceId": "APP-001",
+      "title": "APP-001: Example requirement",
+      "description": "Implement the approved requirement. Verify its acceptance checks before review.",
+      "raw": "Original source wording, acceptance checks, and notes go here without omissions.",
+      "status": "next",
+      "legacyStatus": "Idea",
+      "category": "Foundation",
+      "priority": 1,
+      "notes": []
+    }
+  ]
+}
